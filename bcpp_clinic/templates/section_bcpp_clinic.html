@@ -1,0 +1,14 @@
+{% extends "section_subject.html"%}
+{% load admin_urls %}
+{% load url from future %}
+
+{% block selection_tile%}
+    <div style="clear:left;">
+        {{ current_community }}: {{ current_survey }} | Daily Log: 
+        {% if not daily_log %}
+            <A href="{% url 'admin:bcpp_clinic_dailylog_add' %}?household_member={{clinic_eligibility.household_member.pk}}&next=section_url&section_name=clinic">Add today's log</A>
+        {% else %}
+            <A href="{% url 'admin:bcpp_clinic_dailylog_change' daily_log.pk %}?household_member={{clinic_eligibility.household_member.pk}}&next=section_url&section_name=clinic">{{ daily_log }}</A>            
+        {% endif %} 
+    </div>
+{% endblock%}

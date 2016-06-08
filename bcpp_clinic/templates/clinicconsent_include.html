@@ -1,0 +1,61 @@
+{% load crypto_tags %}
+{% load url from future %}
+{% load admin_urls %}
+
+<div class="results">
+      <table cellspacing="0" id="result_list">
+        <thead><tr>
+        <th>Dashboard</th>
+        <th>Eligibility</th>
+        <th>First Name</th>
+        <th>Last Name</th>        
+        <th>Initials</th>
+        <th>Gender</th>
+        <th>Dob</th>        
+        <th>Consent Date</th>
+        <th>User Created</th>
+        <th>Date Created</th>
+        <th>Host</th>       
+        
+        </thead>
+        <tbody>
+      {% for clinic_eligibility in search_result.object_list %}
+      		{% if clinic_eligibility.get_consent %}
+	            <tr class="{% cycle 'row2' 'row1' %}">
+	            <td><A href="{% url 'subject_dashboard_url' dashboard_type='clinic' dashboard_model='clinic_eligibility' dashboard_id=clinic_eligibility.pk show='appointments' %}">{{ clinic_eligibility.get_consent.subject_identifier }}</A></td>            
+	            <td><A href="{% url clinic_eligibility_meta|admin_urlname:'change' clinic_eligibility.pk %}?next=section_url&section_name=subject">edit eligibility</A></td>
+	            <td>{{clinic_eligibility.get_consent.first_name|encrypted}}</td>
+	            <td>{{clinic_eligibility.get_consent.last_name|encrypted}}</td>            
+	            <td>{{clinic_eligibility.get_consent.initials}}</td>
+	            <td>{{clinic_eligibility.get_consent.gender}}</td>
+	            <td>{{clinic_eligibility.get_consent.dob|date:"Y-m-d"}}</td>
+	            <td>{{clinic_eligibility.get_consent.consent_datetime|date:"d M Y H:i"}}</td>
+	            <td>{{clinic_eligibility.get_consent.user_created}}</td>
+	            <td>{{clinic_eligibility.get_consent.created|date:"d M Y H:i"}}</td>
+	            <td>{{clinic_eligibility.get_consent.hostname_created}}</td>
+	            </tr>
+        	{% else %}
+        		<tr class="{% cycle 'row2' 'row1' %}">
+        		<td>{% if clinic_eligibility.eligible_clinic_subject %}
+	            	<A href="{% url 'subject_dashboard_url' dashboard_type='clinic' dashboard_model='clinic_eligibility' dashboard_id=clinic_eligibility.pk show='appointments' %}">go to consent</A>            
+	            {% else %}
+	            	NOT ELIGIBLE
+	            {% endif %}
+	            </td>
+	            <td><A href="{% url clinic_eligibility_meta|admin_urlname:'change' clinic_eligibility.pk %}?next=section_url&section_name=subject">edit eligibility</A></td>
+	            <td>{{clinic_eligibility.first_name|encrypted}}</td>
+	            <td>-----</td>            
+	            <td>{{clinic_eligibility.initials}}</td>
+	            <td>{{clinic_eligibility.gender}}</td>
+	            <td>{{clinic_eligibility.dob|date:"Y-m-d"}}</td>
+	            <td>-----</td>
+	            <td>{{clinic_eligibility.user_created}}</td>
+	            <td>{{clinic_eligibility.created|date:"d M Y H:i"}}</td>
+	            <td>{{clinic_eligibility.hostname_created}}</td>
+        	{% endif %}
+
+      {% endfor %}
+      <tr><td colspan="9">{{ search_result.object_list.count }} clinic eligibility{{ search_result.object_list|pluralize }} found.</td></tr>                  
+      </tbody>
+      </table>
+      </div>
