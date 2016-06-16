@@ -1,15 +1,15 @@
 from django.db import models
 
 from edc.data_manager.models import TimePointStatusMixin
-from edc.device.dispatch.models import BaseDispatchSyncUuidModel
-from edc.device.sync.models import BaseSyncUuidModel
-from edc.entry_meta_data.managers import EntryMetaDataManager
+from edc_base.model.models import BaseUuidModel
+from edc_sync.models import SyncModelMixin
+from edc_meta_data.managers import CrfMetaDataManager
 from edc.export.managers import ExportHistoryManager
 from edc.export.models import ExportTrackingFieldsMixin
-from edc.subject.locator.models import BaseLocator
-from edc_base.audit_trail import AuditTrail
+from edc_locator.models import LocatorMixin
+from simple_history.models import HistoricalRecords as AuditTrail
 from edc_base.bw.validators import BWCellNumber, BWTelephoneNumber
-from edc_base.encrypted_fields import EncryptedCharField
+from django_crypto_fields.fields import EncryptedCharField
 from edc_consent.models import RequiresConsentMixin
 from edc_constants.choices import YES_NO
 
@@ -20,8 +20,8 @@ from .clinic_off_study_mixin import ClinicOffStudyMixin
 from .clinic_visit import ClinicVisit
 
 
-class ClinicSubjectLocator(ExportTrackingFieldsMixin, ClinicOffStudyMixin, BaseLocator, RequiresConsentMixin,
-                           TimePointStatusMixin, BaseDispatchSyncUuidModel, BaseSyncUuidModel):
+class ClinicSubjectLocator(SyncModelMixin, ExportTrackingFieldsMixin, ClinicOffStudyMixin, LocatorMixin, RequiresConsentMixin,
+                           TimePointStatusMixin, BaseUuidModel):
 
     """A model completed by the user for locator data from consented participants."""
 
@@ -92,7 +92,7 @@ class ClinicSubjectLocator(ExportTrackingFieldsMixin, ClinicOffStudyMixin, BaseL
 
     history = AuditTrail()
 
-    entry_meta_data_manager = EntryMetaDataManager(ClinicVisit)
+    entry_meta_data_manager = CrfMetaDataManager(ClinicVisit)
 
     objects = ClinicModelManager()
 

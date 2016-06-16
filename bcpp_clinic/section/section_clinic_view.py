@@ -1,9 +1,5 @@
 from datetime import date
 
-from edc_device import device
-from edc_map.classes import site_mappers
-
-from bhp066.apps.bcpp_survey.models import Survey
 
 from ..models import ClinicEligibility, DailyLog
 from ..search import ClinicSearchByWord
@@ -26,15 +22,11 @@ class SectionClinicView(BaseSectionView):
             daily_log = DailyLog.objects.get(report_date=date.today())
         except DailyLog.DoesNotExist:
             daily_log = None
-        current_survey = Survey.objects.current_survey()
         context.update({
-            'current_survey': current_survey,
-            'current_community': site_mappers.current_community,
             'daily_log': daily_log,
             'subject_dashboard_url': self.dashboard_url_name,
         })
         return context
 
-# only include section for CPC or the central server
-if site_mappers.get_mapper(site_mappers.current_community).intervention or device.device_id == device.central_server_id:
-    site_sections.register(SectionClinicView)
+
+site_sections.register(SectionClinicView)

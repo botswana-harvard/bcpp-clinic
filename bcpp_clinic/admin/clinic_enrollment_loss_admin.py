@@ -10,10 +10,10 @@ class ClinicEnrollmentLossAdmin(BaseModelAdmin):
 
     form = ClinicEnrollmentLossForm
 
-    fields = ('household_member', 'report_datetime', 'reason')
+    fields = ('clinic_eligibility', 'report_datetime', 'reason')
 
     list_display = (
-        'household_member', 'report_datetime', 'reason', 'user_created', 'user_modified', 'hostname_created')
+        'clinic_eligibility', 'report_datetime', 'reason', 'user_created', 'user_modified', 'hostname_created')
 
     list_filter = ('community', 'report_datetime', 'reason', 'user_created', 'user_modified', 'hostname_created')
 

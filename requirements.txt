@@ -1,0 +1,2 @@
+Django
+git+https://github.com/botswana-harvard/edc-registration@develop#egg=edc_registration

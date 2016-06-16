@@ -2,22 +2,22 @@ from datetime import datetime
 
 from django.db import models
 
-from edc_base.audit_trail import AuditTrail
-from edc.device.sync.models import BaseSyncUuidModel
-from edc_map.classes import site_mappers
+from simple_history.models import HistoricalRecords as AuditTrail
+from edc_base.model.models import BaseUuidModel
+from edc_sync.models import SyncModelMixin
 
-from bhp066.apps.bcpp_household_member.models import HouseholdMember
+from .clinic_eligibility import ClinicEligibility
 
-from ..managers import BaseClinicHouseholdMemberManager
+# from ..managers import BaseClinicHouseholdMemberManager
 
 
-class ClinicEnrollmentLoss(BaseSyncUuidModel):
+class ClinicEnrollmentLoss(SyncModelMixin, BaseUuidModel):
     """A model completed by the system triggered by an ineligible potential participant.
 
     This model is deleted if the criteria is changed resulting in an eligible potential
     participant."""
 
-    household_member = models.OneToOneField(HouseholdMember, null=True)
+    clinic_eligibility = models.OneToOneField(ClinicEligibility, null=True)
 
     report_datetime = models.DateTimeField(
         verbose_name="Report Date and Time",
@@ -35,18 +35,17 @@ class ClinicEnrollmentLoss(BaseSyncUuidModel):
 
     history = AuditTrail()
 
-    objects = BaseClinicHouseholdMemberManager()
+#     objects = BaseClinicHouseholdMemberManager()
 
     def save(self, *args, **kwargs):
-        self.community = site_mappers.get_mapper(site_mappers.current_community).map_area
         super(ClinicEnrollmentLoss, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return unicode(self.household_member)
+        return unicode(self.clinic_eligibility)
 
     def natural_key(self):
-        return self.household_member.natural_key()
-    natural_key.dependencies = ['bcpp_household_member.householdmember', ]
+        return self.clinic_eligibility.natural_key()
+    natural_key.dependencies = ['bcpp_clinic.clinic_eligibility', ]
 
     def loss_reason(self):
         return '; '.join(self.reason or [])

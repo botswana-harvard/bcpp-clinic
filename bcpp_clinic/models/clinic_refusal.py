@@ -1,20 +1,20 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from edc_base.audit_trail import AuditTrail
+from simple_history.models import HistoricalRecords as AuditTrail
 from edc_base.model.fields import OtherCharField
 from edc_base.model.validators import date_not_future, date_not_before_study_start
-from edc.device.sync.models import BaseSyncUuidModel
-from edc_map.classes import site_mappers
+from edc_base.model.models import BaseUuidModel
+from edc_sync.models import SyncModelMixin
+from registration.models import RegisteredSubject
 
-from bhp066.apps.bcpp_household_member.models import HouseholdMember
-
-from ..managers import BaseClinicHouseholdMemberManager
+# from ..managers import BaseClinicHouseholdMemberManager
 
 
-class ClinicRefusal(BaseSyncUuidModel):
+class ClinicRefusal(SyncModelMixin, BaseUuidModel):
     "A model completed by the user for eligible participants who decide not to participate."""
-    household_member = models.OneToOneField(HouseholdMember, null=True)
+
+    registered_subject = models.ForeignKey(RegisteredSubject, null=True)
 
     refusal_date = models.DateField(
         verbose_name="Date subject refused participation",
@@ -51,17 +51,16 @@ class ClinicRefusal(BaseSyncUuidModel):
 
     history = AuditTrail()
 
-    objects = BaseClinicHouseholdMemberManager()
+#     objects = BaseClinicHouseholdMemberManager()
 
     def __unicode__(self):
         return "for participant"
 
     def natural_key(self):
-        return self.household_member.natural_key()
-    natural_key.dependencies = ['bcpp_household_member.householdmember', ]
+        return self.clinic_eligibility.natural_key()
+    natural_key.dependencies = ['bcpp_clinic.clinic_eligibility', ]
 
     def save(self, *args, **kwargs):
-        self.community = site_mappers.get_mapper(site_mappers.current_community).map_area
         super(ClinicRefusal, self).save(*args, **kwargs)
 
     class Meta:

@@ -2,12 +2,13 @@ from datetime import date
 
 from django.db import models
 
-from edc.device.sync.models import BaseSyncUuidModel
+from edc_base.model.models import BaseUuidModel
+from edc_sync.models import SyncModelMixin
 
 from ..managers import DailyLogManager
 
 
-class DailyLog(BaseSyncUuidModel):
+class DailyLog(SyncModelMixin, BaseUuidModel):
     """A model completed by the user daily to help measure the daily flow
     of patients in the clinic."""
 

@@ -5,6 +5,8 @@ from edc_base.modeladmin.admin import BaseModelAdmin
 from ..forms import ClinicEligibilityForm
 from ..models import ClinicEligibility, ClinicHouseholdMember
 
+from edc_registration.models import RegisteredSubject
+
 
 class ClinicEligibilityAdmin(BaseModelAdmin):
 
@@ -33,7 +35,7 @@ class ClinicEligibilityAdmin(BaseModelAdmin):
         "hiv_status",
     )
 
-    list_display = ('household_member', 'report_datetime', 'gender', 'is_eligible', 'is_consented', 'is_refused')
+    list_display = ('registered_subject', 'report_datetime', 'gender', 'is_eligible', 'is_consented', 'is_refused')
 
     list_filter = ('gender', 'is_eligible', 'is_consented', 'is_refused', 'report_datetime', 'community')
 
@@ -52,14 +54,14 @@ class ClinicEligibilityAdmin(BaseModelAdmin):
     }
 
     search_fields = (
-        'household_member',
+        'registered_subject',
         'first_name',
         'initials',
     )
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "household_member":
-            kwargs["queryset"] = ClinicHouseholdMember.objects.filter(id__exact=request.GET.get('household_member', 0))
+        if db_field.name == "registered_subject":
+            kwargs["queryset"] = RegisteredSubject.objects.filter(id__exact=request.GET.get('registered_subject', 0))
         return super(ClinicEligibilityAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 admin.site.register(ClinicEligibility, ClinicEligibilityAdmin)

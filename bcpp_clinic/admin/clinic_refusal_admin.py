@@ -3,20 +3,20 @@ from django.contrib import admin
 from edc_base.modeladmin.admin import BaseModelAdmin
 
 from ..forms import ClinicRefusalForm
-from ..models import ClinicRefusal, ClinicHouseholdMember
+from ..models import ClinicRefusal, ClinicEligibility
 
 
 class ClinicRefusalAdmin(BaseModelAdmin):
 
     form = ClinicRefusalForm
 
-    fields = ('household_member',
+    fields = ('clinic_eligibility',
               'refusal_date',
               'reason',
               'reason_other',
               'comment')
 
-    list_display = ('household_member',
+    list_display = ('clinic_eligibility',
                     'refusal_date',
                     'community',
                     'user_created',
@@ -34,8 +34,8 @@ class ClinicRefusalAdmin(BaseModelAdmin):
     }
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "household_member":
-            kwargs["queryset"] = ClinicHouseholdMember.objects.filter(id__exact=request.GET.get('household_member', 0))
+        if db_field.name == "clinic_eligibility":
+            kwargs["queryset"] = ClinicEligibility.objects.filter(id__exact=request.GET.get('clinic_eligibility', 0))
         return super(ClinicRefusalAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 admin.site.register(ClinicRefusal, ClinicRefusalAdmin)

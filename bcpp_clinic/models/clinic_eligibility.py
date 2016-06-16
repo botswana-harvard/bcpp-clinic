@@ -5,10 +5,9 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MaxLengthValidator, RegexValidator
 from django.db import models
 
-from edc.device.sync.models import BaseSyncUuidModel
-from edc_map.classes import site_mappers
-from edc.subject.registration.models import RegisteredSubject
-from edc_base.audit_trail import AuditTrail
+from edc_base.model.models import BaseUuidModel
+from edc_sync.models import SyncModelMixin
+from simple_history.models import HistoricalRecords as AuditTrail
 from edc_base.encrypted_fields import FirstnameField
 from edc_base.encrypted_fields import IdentityField
 from edc_base.encrypted_fields import IdentityTypeField
@@ -17,30 +16,21 @@ from edc_base.model.validators import dob_not_future
 from edc_constants.choices import YES_NO_UNKNOWN, GENDER, YES_NO_NA, YES_NO
 from edc_constants.constants import NOT_APPLICABLE
 
-from bhp066.apps.bcpp.choices import INABILITY_TO_PARTICIPATE_REASON, VERBALHIVRESULT_CHOICE
-from bhp066.apps.bcpp_household.models import HouseholdStructure
-from bhp066.apps.bcpp_household_member.constants import CLINIC_RBD
-from bhp066.apps.bcpp_household_member.models import HouseholdMember
-from bhp066.apps.bcpp_survey.models import Survey
-
-from ..managers import BaseClinicHouseholdMemberManager
+# from ..managers import BaseClinicHouseholdMemberManager
 
 from .clinic_consent import ClinicConsent
+# from ..contants import CLINIC_RBD
+from ..choices import INABILITY_TO_PARTICIPATE_REASON, VERBALHIVRESULT_CHOICE
 from .clinic_enrollment_loss import ClinicEnrollmentLoss
-from .clinic_household_member import ClinicHouseholdMember
+from registration.models import RegisteredSubject
 from .clinic_refusal import ClinicRefusal
 
 
-class ClinicEligibility (BaseSyncUuidModel):
+class ClinicEligibility (SyncModelMixin, BaseUuidModel):
     """A model completed by the user that confirms and saves eligibility
     information for potential participant."""
 
-    household_member = models.OneToOneField(
-        HouseholdMember,
-        null=True,
-        blank=True,
-        help_text='Created automatically and associated with the clinic plot.'
-    )
+    registered_subject = models.OneToOneField(RegisteredSubject, null=True)
 
     report_datetime = models.DateTimeField(
         verbose_name="Report Date and Time",
@@ -204,7 +194,7 @@ class ClinicEligibility (BaseSyncUuidModel):
                    'Always null for non-clinic members.'),
     )
 
-    objects = BaseClinicHouseholdMemberManager()
+#     objects = BaseClinicHouseholdMemberManager()
 
     history = AuditTrail()
 
@@ -223,9 +213,6 @@ class ClinicEligibility (BaseSyncUuidModel):
                     self.check_for_known_identity(self.identity)
             self.age_in_years = relativedelta(self.report_datetime.date(), self.dob).years
             self.is_eligible, self.loss_reason = self.passes_enrollment_criteria()
-            self.community = site_mappers.get_mapper(site_mappers.current_community).map_area
-            if not self.household_member:
-                self.household_member = self.clinic_household_member
         super(ClinicEligibility, self).save(*args, **kwargs)
 
     def __unicode__(self):
@@ -247,43 +234,11 @@ class ClinicEligibility (BaseSyncUuidModel):
             pass
 
     def natural_key(self):
-        return self.household_member.natural_key()
-    natural_key.dependencies = ['bcpp_household_member.householdmember', ]
+        return self.registered_subject.natural_key()
+    natural_key.dependencies = ['edc_registration.registered_subject', ]
 
     def get_registered_subject(self):
-        return self.household_member.register_subject
-
-    @property
-    def clinic_household_member(self):
-        """Returns the household_member and will create if one does not exist.
-
-        ClinicHouseholdMember is a proxy model of HouseholdMember."""
-        try:
-            clinic_household_member = ClinicHouseholdMember.objects.get(pk=self.household_member.pk)
-        except (ClinicHouseholdMember.DoesNotExist, AttributeError):
-            household_structure = HouseholdStructure.objects.get(
-                household__plot=site_mappers.get_mapper(site_mappers.current_community).clinic_plot,
-                survey=Survey.objects.current_survey())
-            clinic_household_member = ClinicHouseholdMember.objects.create(
-                household_structure=household_structure,
-                first_name=self.first_name,
-                initials=self.initials,
-                age_in_years=self.age_in_years,
-                gender=self.gender,
-                present_today='N/A',
-                inability_to_participate=self.inability_to_participate,
-                study_resident=self.part_time_resident,
-                member_status=CLINIC_RBD,
-                is_consented=False,
-                relation='UNKNOWN',
-                eligible_member=True,
-                eligible_subject=True,
-                additional_key=self.additional_key,
-            )
-        if not self.household_member:
-            # only set if self.household_member was None
-            self.household_member = clinic_household_member
-        return self.household_member
+        return self.register_subject
 
     @classmethod
     def check_for_consent(cls, identity, exception_cls=None):
@@ -402,7 +357,7 @@ class ClinicEligibility (BaseSyncUuidModel):
     @property
     def clinic_refusal(self):
         try:
-            clinic_refusal = ClinicRefusal.objects.get(household_member=self.household_member)
+            clinic_refusal = ClinicRefusal.objects.get(registered_subject=self.registered_subject)
         except ClinicRefusal.DoesNotExist:
             clinic_refusal = None
         return clinic_refusal
@@ -410,7 +365,7 @@ class ClinicEligibility (BaseSyncUuidModel):
     @property
     def clinic_consent(self):
         try:
-            clinic_consent = ClinicConsent.objects.get(household_member=self.household_member)
+            clinic_consent = ClinicConsent.objects.get(registered_subject=self.registered_subject)
         except ClinicRefusal.DoesNotExist:
             clinic_consent = None
         return clinic_consent
@@ -418,7 +373,7 @@ class ClinicEligibility (BaseSyncUuidModel):
     @property
     def clinic_enrollment_loss(self):
         try:
-            clinic_enrollment_loss = ClinicEnrollmentLoss.objects.get(household_member=self.household_member)
+            clinic_enrollment_loss = ClinicEnrollmentLoss.objects.get(registered_subject=self.registered_subject)
         except ClinicEnrollmentLoss.DoesNotExist:
             clinic_enrollment_loss = None
         return clinic_enrollment_loss

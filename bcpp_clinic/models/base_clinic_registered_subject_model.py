@@ -2,12 +2,13 @@ from datetime import datetime
 from django.db import models
 
 from edc_base.model.validators import datetime_not_before_study_start, datetime_not_future
-from edc.device.sync.models import BaseSyncUuidModel
-from edc.subject.registration.managers import RegisteredSubjectManager
-from edc.subject.registration.models import RegisteredSubject
+from edc_base.model.models import BaseUuidModel
+from edc_sync.models import SyncModelMixin
+# from edc.subject.registration.managers import RegisteredSubjectManager
+from registration.models import RegisteredSubject
 
 
-class BaseClinicRegisteredSubjectModel(BaseSyncUuidModel):
+class BaseClinicRegisteredSubjectModel(SyncModelMixin, BaseUuidModel):
 
     registration_datetime = models.DateTimeField(
         verbose_name="Registration date/time",
@@ -19,7 +20,7 @@ class BaseClinicRegisteredSubjectModel(BaseSyncUuidModel):
     # This is updated by a post save signal
     registered_subject = models.ForeignKey(RegisteredSubject, editable=False, null=True,)
 
-    objects = RegisteredSubjectManager()
+#     objects = RegisteredSubjectManager()
 
     def __unicode__(self):
         return unicode(self.registered_subject)

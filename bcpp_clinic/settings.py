@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from unipath import Path
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -37,6 +39,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'edc_appointment',
+    'edc_base',
+    'edc_dashboard',
+    'edc_identifier',
+    'edc_locator',
+    'edc_offstudy',
+    'edc_registration',
+    'registration',
+    'edc_sync',
+    'edc_visit_tracking',
+    'edc_meta_data',
+    'django_extensions',
+    'django_revision',
+    'edc_device',
+    'edc_content_type_map',
+    'edc_rule_groups',
+    'edc_export',
+    'edc_visit_schedule',
+    'django_crypto_fields.apps.DjangoCryptoFieldsAppConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -119,3 +140,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+GIT_DIR = BASE_DIR.ancestor(1)
