@@ -1,12 +1,13 @@
-from edc_base.model.models import HistoricalRecords
+from edc_base.model_managers import HistoricalRecords
+from edc_base.model_mixins import BaseUuidModel
+from edc_offstudy.model_mixins import OffstudyModelMixin, OffstudyModelManager
 
 
-from edc.subject.off_study.models import BaseOffStudy
+class ClinicOffStudy(OffstudyModelMixin, BaseUuidModel):
 
+    objects = OffstudyModelManager()
 
-class ClinicOffStudy(BaseOffStudy):
-    """A model completed by the user to indicate a subject is no longer on study."""
-    history = AuditTrail()
+    history = HistoricalRecords()
 
     class Meta:
         app_label = "bcpp_clinic"

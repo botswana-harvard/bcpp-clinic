@@ -2,13 +2,12 @@ from datetime import date
 
 from django.db import models
 
-from edc_sync.model_mixins import SyncModelMixin
-from edc_base.model.models import BaseUuidModel
+from edc_base.model_mixins.base_uuid_model import BaseUuidModel
 
 from ..managers import DailyLogManager
 
 
-class DailyLog(SyncModelMixin, BaseUuidModel):
+class DailyLog(BaseUuidModel):
     """A model completed by the user daily to help measure the daily flow
     of patients in the clinic."""
 
@@ -53,7 +52,7 @@ class DailyLog(SyncModelMixin, BaseUuidModel):
         verbose_name='Number of patients who refused to complete the eligibility checklist',
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.report_date.strftime('%Y-%m-%d')
 
     def natural_key(self):

@@ -1,28 +1,21 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-from edc.entry_meta_data.managers import EntryMetaDataManager
 from edc_base.model.models import HistoricalRecords
+from edc_base.model_fields import OtherCharField
 
-
-from edc_base.model.fields import OtherCharField
 from edc_constants.choices import YES_NO_DWTA
 
-from .base_clinic_visit_model import BaseClinicVisitModel
-from .clinic_consent import ClinicConsent
+from edc.entry_meta_data.managers import EntryMetaDataManager
+
+
 from .clinic_visit import ClinicVisit
-
-REGISTRATION_TYPES = (
-    ('initiation', 'Initiation Visit'),
-    ('masa_vl_scheduled', 'MASA Scheduled Viral Load Visit'),
-    ('OTHER', 'Other NON-Viral Load Visit')
-)
+from ..choices import REGISTRATION_TYPES
+from ..models import CrfModelMixin
 
 
-class Questionnaire(BaseClinicVisitModel):
+class Questionnaire(CrfModelMixin):
     """A model completed by the user that captures ARV and CD4 data."""
-
-    CONSENT_MODEL = ClinicConsent
 
     registration_type = models.CharField(
         verbose_name="What type of Clinic Registration is this?",
@@ -57,11 +50,11 @@ class Questionnaire(BaseClinicVisitModel):
         help_text="",
     )
 
-    history = AuditTrail()
+    history = HistoricalRecords()
 
     entry_meta_data_manager = EntryMetaDataManager(ClinicVisit)
 
-    class Meta:
+    class Meta(CrfModelMixin.Meta):
         app_label = 'bcpp_clinic'
         verbose_name = "Questionnaire"
         verbose_name_plural = "Questionnaire"

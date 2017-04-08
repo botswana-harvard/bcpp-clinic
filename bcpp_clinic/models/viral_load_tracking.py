@@ -2,20 +2,16 @@ from django.db import models
 
 from edc.entry_meta_data.managers import EntryMetaDataManager
 from edc.lab.lab_requisition.choices import REASON_NOT_DRAWN
+from edc_base.model.fields import InitialsField
 from edc_base.model.models import HistoricalRecords
 
-
-from edc_base.model.fields import InitialsField
 from edc_constants.choices import YES_NO
 
-from .base_clinic_visit_model import BaseClinicVisitModel
 from .clinic_visit import ClinicVisit
-from .clinic_consent import ClinicConsent
+from .crf_model_mixin import CrfModelMixin
 
 
-class ViralLoadTracking(BaseClinicVisitModel):
-
-    CONSENT_MODEL = ClinicConsent
+class ViralLoadTracking(CrfModelMixin):
 
     is_drawn = models.CharField(
         verbose_name='Was a specimen drawn?',
@@ -47,11 +43,11 @@ class ViralLoadTracking(BaseClinicVisitModel):
         default='--',
     )
 
-    history = AuditTrail()
+    history = HistoricalRecords()
 
     entry_meta_data_manager = EntryMetaDataManager(ClinicVisit)
 
-    class Meta:
+    class Meta(CrfModelMixin.Meta):
         app_label = 'bcpp_clinic'
         verbose_name = 'Viral Load Tracking'
         verbose_name_plural = 'Viral Load Tracking'
