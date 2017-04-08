@@ -2,22 +2,35 @@ import re
 
 from django.db import models
 
-from edc_identifier.exceptions import IdentifierError
-from edc_appointment.models import AppointmentMixin
-from registration.models import RegisteredSubject
+from edc.core.bhp_variables.models import StudySite
+from edc.core.identifier.exceptions import IdentifierError
+from edc_map.site_mappers import site_mappers
+from edc.subject.appointment_helper.models import BaseAppointmentMixin
+from edc.subject.registration.models import RegisteredSubject
 from edc_consent.models import BaseConsent
 from edc_constants.choices import YES_NO
 
-from ..choices import COMMUNITIES
+from bhp066.apps.bcpp.choices import COMMUNITIES
+from bhp066.apps.bcpp_household_member.models import HouseholdMember
+from bhp066.apps.bcpp_survey.models import Survey
 
 
-class BaseClinicConsent(AppointmentMixin, BaseConsent):
+class BaseHouseholdMemberConsent(BaseAppointmentMixin, BaseConsent):
+
+    household_member = models.ForeignKey(HouseholdMember, help_text='')
 
     registered_subject = models.ForeignKey(
         RegisteredSubject,
         editable=False,
         null=True,
         help_text='one registered subject will be related to one household member for each survey')
+
+    study_site = models.ForeignKey(
+        StudySite,
+        verbose_name='Site',
+        null=True,
+        help_text="This refers to the site or 'clinic area' where the subject is being consented."
+    )
 
     is_minor = models.CharField(
         verbose_name=("Is subject a minor?"),
@@ -31,6 +44,8 @@ class BaseClinicConsent(AppointmentMixin, BaseConsent):
 
     is_signed = models.BooleanField(default=False)
 
+    survey = models.ForeignKey(Survey, editable=False, null=True)
+
     community = models.CharField(max_length=25, choices=COMMUNITIES, null=True, editable=False)
 
     def __unicode__(self):
@@ -39,9 +54,14 @@ class BaseClinicConsent(AppointmentMixin, BaseConsent):
     def get_registration_datetime(self):
         return self.consent_datetime
 
+    def get_site_code(self):
+        return site_mappers.get_mapper(site_mappers.current_community).map_code
+
     def save(self, *args, **kwargs):
         if not self.id:
             self.registered_subject = RegisteredSubject.objects.get(identity=self.identity)
+            self.household_member = HouseholdMember.objects.get(registered_subject=self.registered_subject)
+            self.survey = self.household_member.household_structure.survey
         super(BaseHouseholdMemberConsent, self).save(*args, **kwargs)
 
     def _check_if_duplicate_subject_identifier(self, using):

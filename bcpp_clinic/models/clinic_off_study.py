@@ -1,8 +1,10 @@
-from simple_history.models import HistoricalRecords as AuditTrail
-from edc_offstudy.models import OffStudyModelMixin
+from edc_base.model.models import HistoricalRecords
 
 
-class ClinicOffStudy(OffStudyModelMixin):
+from edc.subject.off_study.models import BaseOffStudy
+
+
+class ClinicOffStudy(BaseOffStudy):
     """A model completed by the user to indicate a subject is no longer on study."""
     history = AuditTrail()
 

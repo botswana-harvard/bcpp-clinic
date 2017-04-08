@@ -1,6 +1,8 @@
 from django.db import models
 
-from edc_base.audit_trail import AuditTrail
+from edc_base.model.models import HistoricalRecords
+
+
 from edc_base.model.fields import InitialsField
 from edc.core.bhp_variables.models import StudySite
 from edc_base.encrypted_fields import EncryptedCharField

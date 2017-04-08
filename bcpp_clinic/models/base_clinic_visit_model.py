@@ -2,10 +2,12 @@ from datetime import datetime
 
 from django.db import models
 
-from simple_history.models import HistoricalRecords as AuditTrail
+from edc_base.model.models import HistoricalRecords
+
+
 from edc_base.model.validators import datetime_not_before_study_start, datetime_not_future
+from edc_sync.model_mixins import SyncModelMixin
 from edc_base.model.models import BaseUuidModel
-from edc_sync.models import SyncModelMixin
 from edc_consent.models import RequiresConsentMixin
 
 from .clinic_off_study_mixin import ClinicOffStudyMixin
@@ -14,7 +16,7 @@ from .clinic_visit import ClinicVisit
 from ..managers import ClinicModelManager
 
 
-class BaseClinicVisitModel(SyncModelMixin, ClinicOffStudyMixin, RequiresConsentMixin, BaseUuidModel):
+class BaseClinicVisitModel(ClinicOffStudyMixin, RequiresConsentMixin, SyncModelMixin, BaseUuidModel):
 
     """ Base model for all clinic scheduled models (adds key to :class:`ClinicVisit`). """
 

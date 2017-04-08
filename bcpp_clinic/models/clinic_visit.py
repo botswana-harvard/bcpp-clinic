@@ -1,26 +1,31 @@
 from django.db import models
 
-from edc_base.audit_trail import AuditTrail
+from edc_base.model.models import HistoricalRecords
+
+
 from edc_constants.constants import NEW
-from edc_meta_data.models import RequisitionMetaData, CrfMetaDataMixin
-from edc_lab.lab_clinic_api.models import Panel
-from edc_meta_data.models import CrfEntry, LabEntry
-from edc_visit_tracking.models import VisitModelMixin, CaretakerFieldsMixin, PreviousVisitMixin
+from edc.entry_meta_data.models import RequisitionMetaData, ScheduledEntryMetaData
+from edc.lab.lab_clinic_api.models import Panel
+from edc.subject.entry.models import LabEntry, Entry
+from edc.subject.visit_tracking.models import BaseVisitTracking
 from edc_consent.models import RequiresConsentMixin
+from edc_sync.model_mixins import SyncModelMixin
 from edc_base.model.models import BaseUuidModel
-from edc_sync.models import SyncModelMixin
+
+from bhp066.apps.bcpp_household_member.models import HouseholdMember
 
 from .clinic_off_study_mixin import ClinicOffStudyMixin
 from .clinic_consent import ClinicConsent
 
 
-class ClinicVisit(SyncModelMixin, ClinicOffStudyMixin, PreviousVisitMixin, RequiresConsentMixin, CaretakerFieldsMixin,
-                  VisitModelMixin, CrfMetaDataMixin, BaseUuidModel):
+class ClinicVisit(ClinicOffStudyMixin, RequiresConsentMixin, BaseVisitTracking, SyncModelMixin, BaseUuidModel):
     """A model completed by the user to indicate track the actual appointment or visit.
 
     The model captures actual report date, time and location (home, clinic, etc)."""
 
     CONSENT_MODEL = ClinicConsent
+
+    household_member = models.ForeignKey(HouseholdMember)
 
     reason_unscheduled = models.CharField(
         verbose_name="If 'Unscheduled' above, provide reason for the unscheduled visit",
@@ -86,17 +91,17 @@ class ClinicVisit(SyncModelMixin, ClinicOffStudyMixin, PreviousVisitMixin, Requi
         updating the VL tracking scheduled metadata status to NEW."""
         if self.appointment.visit_definition.code == 'C0':
             if self.reason in ['MASA Scheduled VL Visit', 'CCC visit']:
-                crfentry = CrfEntry.objects.get(
+                entry = Entry.objects.get(
                     model_name='viralloadtracking',
                     visit_definition_id=self.appointment.visit_definition_id)
                 scheduled_meta_data = ScheduledEntryMetaData.objects.filter(
                     appointment=self.appointment,
-                    entry=crfentry,
+                    entry=entry,
                     registered_subject=self.registered_subject)
                 if not scheduled_meta_data:
                     scheduled_meta_data = ScheduledEntryMetaData.objects.create(
                         appointment=self.appointment,
-                        entry=crfentry,
+                        entry=entry,
                         registered_subject=self.registered_subject)
                 else:
                     scheduled_meta_data = scheduled_meta_data[0]

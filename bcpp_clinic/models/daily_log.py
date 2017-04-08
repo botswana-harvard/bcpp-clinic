@@ -2,8 +2,8 @@ from datetime import date
 
 from django.db import models
 
+from edc_sync.model_mixins import SyncModelMixin
 from edc_base.model.models import BaseUuidModel
-from edc_sync.models import SyncModelMixin
 
 from ..managers import DailyLogManager
 

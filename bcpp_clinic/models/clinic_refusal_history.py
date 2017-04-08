@@ -5,10 +5,12 @@ from django_extensions.db.fields import UUIDField
 
 from edc_base.model.fields import OtherCharField
 from edc_base.model.models import BaseUuidModel
-from registration.models import RegisteredSubject
+
+from bhp066.apps.bcpp.choices import WHYNOPARTICIPATE_CHOICE
+from bhp066.apps.bcpp_household_member.models import HouseholdMember
+from bhp066.apps.bcpp_survey.models import Survey
 
 from ..managers import ClinicRefusalHistoryManager
-from ..choices import WHYNOPARTICIPATE_CHOICE
 
 
 class ClinicRefusalHistory(BaseUuidModel):
@@ -16,11 +18,13 @@ class ClinicRefusalHistory(BaseUuidModel):
 
     transaction = UUIDField()
 
-    registered_subject = models.ForeignKey(RegisteredSubject, null=True)
+    household_member = models.ForeignKey(HouseholdMember)
 
     report_datetime = models.DateTimeField(
         verbose_name="Report date",
         default=datetime.today())
+
+    survey = models.ForeignKey(Survey, editable=False)
 
     refusal_date = models.DateField(
         verbose_name="Date subject refused participation",

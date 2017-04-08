@@ -1,6 +1,6 @@
 from .clinic_off_study import ClinicOffStudy
 
-from edc_offstudy.models import OffStudyMixin
+from edc.subject.off_study.mixins import OffStudyMixin
 
 
 class ClinicOffStudyMixin(OffStudyMixin):

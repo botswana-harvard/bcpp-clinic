@@ -1,57 +1,30 @@
-from datetime import datetime
-
 from django.db import models
 
-from simple_history.models import HistoricalRecords as AuditTrail
-from edc_base.model.models import BaseUuidModel
-from edc_sync.models import SyncModelMixin
+from edc_base.model_managers import HistoricalRecords
+from edc_base.model_mixins import BaseUuidModel
 
-from .clinic_eligibility import ClinicEligibility
-
-# from ..managers import BaseClinicHouseholdMemberManager
+from member.managers import MemberEntryManager
+from member.models.model_mixins import HouseholdMemberModelMixin
 
 
-class ClinicEnrollmentLoss(SyncModelMixin, BaseUuidModel):
-    """A model completed by the system triggered by an ineligible potential participant.
-
-    This model is deleted if the criteria is changed resulting in an eligible potential
-    participant."""
-
-    clinic_eligibility = models.OneToOneField(ClinicEligibility, null=True)
-
-    report_datetime = models.DateTimeField(
-        verbose_name="Report Date and Time",
-        default=datetime.today(),
-        help_text='Date and time of report.'
-    )
+class ClinicEnrollmentLoss(HouseholdMemberModelMixin, BaseUuidModel):
+    """A system model auto created that captures the reason for a present BHS eligible member
+    who passes BHS eligibility but is not participating in the BHS."""
 
     reason = models.TextField(
         verbose_name='Reason not eligible',
         max_length=500,
-        help_text='A list of reasons delimited by \';\'. From clinic_eligibility.loss_reason.'
-    )
+        help_text='Do not include any personal identifiable information.')
 
-    community = models.CharField(max_length=25, editable=False)
+    objects = MemberEntryManager()
 
-    history = AuditTrail()
-
-#     objects = BaseClinicHouseholdMemberManager()
-
-    def save(self, *args, **kwargs):
-        super(ClinicEnrollmentLoss, self).save(*args, **kwargs)
-
-    def __unicode__(self):
-        return unicode(self.clinic_eligibility)
+    history = HistoricalRecords()
 
     def natural_key(self):
-        return self.clinic_eligibility.natural_key()
-    natural_key.dependencies = ['bcpp_clinic.clinic_eligibility', ]
+        return (self.report_datetime, ) + self.household_member.natural_key()
+    natural_key.dependencies = ['member.householdmember', ]
 
-    def loss_reason(self):
-        return '; '.join(self.reason or [])
-    loss_reason.allow_tags = True
-
-    class Meta:
+    class Meta(HouseholdMemberModelMixin.Meta):
         app_label = 'bcpp_clinic'
         verbose_name = 'Clinic Enrollment Loss'
         verbose_name_plural = 'Clinic Enrollment Loss'

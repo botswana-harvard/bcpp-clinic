@@ -1,12 +1,16 @@
 from django.db import models
 
+from bhp066.apps.bcpp_household_member.models import HouseholdMember
+from bhp066.apps.bcpp_survey.models import Survey
+
 from ..managers import ConsentHistoryManager
-from .clinic_visit import ClinicVisit
 
 
 class ClinicConsentHistory(models.Model):
 
-    clinic_visit = models.ForeignKey(ClinicVisit)
+    survey = models.ForeignKey(Survey)
+
+    household_member = models.ForeignKey(HouseholdMember)
 
     objects = ConsentHistoryManager()
 

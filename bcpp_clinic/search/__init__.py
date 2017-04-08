@@ -1,2 +1,0 @@
-from .clinic_search_by_word import ClinicSearchByWord
-from .refusal_search_by_word import RefusalSearchByWord
