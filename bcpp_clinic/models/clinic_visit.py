@@ -18,12 +18,9 @@ class ClinicVisit(SubjectVisit):
                                       self.appointment.registered_subject.gender,
                                       self.appointment.visit_definition.code)
 
-    @property
-    def registered_subject(self):
-        return self.get_registered_subject()
-
     class Meta(VisitModelMixin.Meta, RequiresConsentMixin.Meta):
         app_label = "bcpp_clinic"
         verbose_name = "Clinic Visit"
         verbose_name_plural = "Clinic Visit"
-        consent_model = 'bcpp_subject.clinicconsent'
+        consent_model = 'bcpp_clinic.clinicconsent'
+        proxy = True

@@ -1,1 +1,0 @@
-from bcpp_clinic import BcppClinicVisitSchedule
