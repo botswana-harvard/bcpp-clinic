@@ -1,14 +1,10 @@
 from django.db import models
 
-from edc.entry_meta_data.managers import EntryMetaDataManager
-from edc.lab.lab_requisition.choices import REASON_NOT_DRAWN
-from edc_base.model.fields import InitialsField
-from edc_base.model.models import HistoricalRecords
-
 from edc_constants.choices import YES_NO
 
-from .clinic_visit import ClinicVisit
 from .crf_model_mixin import CrfModelMixin
+from edc_lab.choices import REASON_NOT_DRAWN
+from edc_base.model_fields.custom_fields import InitialsField
 
 
 class ViralLoadTracking(CrfModelMixin):
@@ -42,10 +38,6 @@ class ViralLoadTracking(CrfModelMixin):
         blank=True,
         default='--',
     )
-
-    history = HistoricalRecords()
-
-    entry_meta_data_manager = EntryMetaDataManager(ClinicVisit)
 
     class Meta(CrfModelMixin.Meta):
         app_label = 'bcpp_clinic'

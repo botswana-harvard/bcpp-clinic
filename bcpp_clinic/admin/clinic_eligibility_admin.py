@@ -1,14 +1,16 @@
 from django.contrib import admin
 
-from edc_base.modeladmin.admin import BaseModelAdmin
-
 from ..forms import ClinicEligibilityForm
-from ..models import ClinicEligibility, ClinicHouseholdMember
 
 from edc_registration.models import RegisteredSubject
+from bcpp_clinic.models.clinic_eligibility import ClinicEligibility
+from edc_base.fieldsets.fieldsets_modeladmin_mixin import FieldsetsModelAdminMixin
+from bcpp_clinic.admin_site import bcpp_clinic_admin
+from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
 
 
-class ClinicEligibilityAdmin(BaseModelAdmin):
+@admin.register(ClinicEligibility, site=bcpp_clinic_admin)
+class ClinicEligibilityAdmin(ModelAdminMixin, FieldsetsModelAdminMixin, admin.ModelAdmin):
 
     form = ClinicEligibilityForm
 
@@ -63,5 +65,3 @@ class ClinicEligibilityAdmin(BaseModelAdmin):
         if db_field.name == "registered_subject":
             kwargs["queryset"] = RegisteredSubject.objects.filter(id__exact=request.GET.get('registered_subject', 0))
         return super(ClinicEligibilityAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-admin.site.register(ClinicEligibility, ClinicEligibilityAdmin)

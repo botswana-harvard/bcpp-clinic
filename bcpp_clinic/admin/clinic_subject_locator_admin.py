@@ -3,11 +3,14 @@ from django.contrib import admin
 from ..filters import ClinicCommunityListFilter
 from ..forms import ClinicSubjectLocatorForm
 from ..models import ClinicSubjectLocator
+from edc_base.fieldsets.fieldsets_modeladmin_mixin import FieldsetsModelAdminMixin
+from bcpp_clinic.admin_site import bcpp_clinic_admin
+from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
 
-from .clinic_visit_model_admin import ClinicVisitModelAdmin
 
-
-class ClinicSubjectLocatorAdmin(ClinicVisitModelAdmin):
+@admin.register(ClinicSubjectLocator, site=bcpp_clinic_admin)
+class ClinicSubjectLocatorAdmin(ModelAdminMixin, FieldsetsModelAdminMixin,
+                                admin.ModelAdmin):
 
     form = ClinicSubjectLocatorForm
     fields = (
@@ -51,5 +54,3 @@ class ClinicSubjectLocatorAdmin(ClinicVisitModelAdmin):
 
     list_display = ('clinic_visit', 'date_signed', "home_visit_permission", "may_follow_up",
                     "may_sms_follow_up", "has_alt_contact", "may_call_work", "may_contact_someone")
-
-admin.site.register(ClinicSubjectLocator, ClinicSubjectLocatorAdmin)

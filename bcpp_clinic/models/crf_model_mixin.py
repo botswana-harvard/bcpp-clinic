@@ -16,8 +16,7 @@ from edc_visit_tracking.managers import CrfModelManager as VisitTrackingCrfModel
 from edc_visit_tracking.model_mixins import (
     CrfModelMixin as VisitTrackingCrfModelMixin, PreviousVisitModelMixin)
 
-from bcpp_subject.models.model_mixins.crf_model_mixin import CrfModelManager
-from bcpp_subject.models.requires_consent_model_mixin import RequiresConsentMixin
+from edc_consent.model_mixins import RequiresConsentMixin as BaseRequiresConsentMixin
 
 from .clinic_visit import ClinicVisit
 
@@ -35,7 +34,7 @@ class CrfModelManager(VisitTrackingCrfModelManager):
 
 
 class CrfModelMixin(VisitTrackingCrfModelMixin, OffstudyMixin,
-                    RequiresConsentMixin, PreviousVisitModelMixin,
+                    BaseRequiresConsentMixin, PreviousVisitModelMixin,
                     UpdatesCrfMetadataModelMixin,
                     FormAsJSONModelMixin, BaseUuidModel):
 
@@ -52,14 +51,12 @@ class CrfModelMixin(VisitTrackingCrfModelMixin, OffstudyMixin,
         help_text=('If reporting today, use today\'s date/time, otherwise use '
                    'the date/time this information was reported.'))
 
-    objects = CrfModelManager()
-
     history = HistoricalRecords()
 
     def natural_key(self):
         return self.clinic_visit.natural_key()
     natural_key.dependencies = ['bcpp_clinic.clinicvisit']
 
-    class Meta(VisitTrackingCrfModelMixin.Meta, RequiresConsentMixin.Meta):
-        consent_model = 'bcpp_subject.clinicconsent'
+    class Meta(VisitTrackingCrfModelMixin.Meta, BaseRequiresConsentMixin.Meta):
+        consent_model = 'bcpp_clinic.clinicconsent'
         abstract = True

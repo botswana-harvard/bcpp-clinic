@@ -1,12 +1,13 @@
 from django.contrib import admin
 
-from edc_base.modeladmin.admin import BaseModelAdmin
-
 from ..forms import DailyLogForm
 from ..models import DailyLog
+from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
+from bcpp_clinic.admin_site import bcpp_clinic_admin
 
 
-class DailyLogAdmin(BaseModelAdmin):
+@admin.register(DailyLog, site=bcpp_clinic_admin)
+class DailyLogAdmin(ModelAdminMixin, admin.ModelAdmin):
 
     form = DailyLogForm
 
@@ -37,5 +38,3 @@ class DailyLogAdmin(BaseModelAdmin):
     list_filter = ('report_date', )
 
     instructions = ['Complete this form once per day.']
-
-admin.site.register(DailyLog, DailyLogAdmin)

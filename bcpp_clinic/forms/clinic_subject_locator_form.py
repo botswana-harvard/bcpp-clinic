@@ -2,10 +2,8 @@ from django import forms
 
 from ..models import ClinicSubjectLocator
 
-from .base_clinic_model_form import BaseClinicModelForm
 
-
-class ClinicSubjectLocatorForm (BaseClinicModelForm):
+class ClinicSubjectLocatorForm (forms.ModelForm):
 
     def validate_home_visit_permission(self):
         cleaned_data = self.cleaned_data
@@ -109,3 +107,4 @@ class ClinicSubjectLocatorForm (BaseClinicModelForm):
 
     class Meta:
         model = ClinicSubjectLocator
+        fields = '__all__'

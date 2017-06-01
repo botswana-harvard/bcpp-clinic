@@ -1,10 +1,9 @@
 from django import forms
 
 from ..models import ViralLoadTracking
-from .base_clinic_model_form import BaseClinicModelForm
 
 
-class ViralLoadTrackingForm(BaseClinicModelForm):
+class ViralLoadTrackingForm(forms.ModelForm):
 
     def clean(self):
 
@@ -20,3 +19,4 @@ class ViralLoadTrackingForm(BaseClinicModelForm):
 
     class Meta:
         model = ViralLoadTracking
+        fields = '__all__'

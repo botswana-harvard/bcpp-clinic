@@ -1,19 +1,18 @@
 from django.contrib import admin
 
-from edc.subject.appointment.admin import BaseAppointmentModelAdmin
-
-from bhp066.apps.bcpp_household_member.models import HouseholdMember
-from bhp066.apps.bcpp_lab.models import ClinicRequisition
-
 from ..forms import ClinicVisitForm
 from ..models import ClinicVisit, ClinicEligibility
+from edc_visit_tracking.modeladmin_mixins import VisitModelAdminMixin
+from bcpp_clinic.admin_site import bcpp_clinic_admin
+from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
+from member.models.household_member.household_member import HouseholdMember
+from bcpp_clinic.models.clinic_requisition import ClinicRequisition
 
 
-class ClinicVisitAdmin(BaseAppointmentModelAdmin):
+@admin.register(ClinicVisit, site=bcpp_clinic_admin)
+class ClinicVisitAdmin(VisitModelAdminMixin, ModelAdminMixin, admin.ModelAdmin):
 
     form = ClinicVisitForm
-
-    visit_model_instance_field = 'clinic_visit'
 
     requisition_model = ClinicRequisition
 
@@ -49,20 +48,3 @@ class ClinicVisitAdmin(BaseAppointmentModelAdmin):
         "report_datetime",
         "comments"
     )
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "household_member":
-            try:
-                HouseholdMember.objects.get(id=request.GET.get('household_member'))
-                household_members = HouseholdMember.objects.filter(id=request.GET.get('household_member'))
-            except HouseholdMember.DoesNotExist:
-                try:
-                    household_member = ClinicEligibility.objects.get(
-                        id=request.GET.get('dashboard_id')).household_member
-                    household_members = HouseholdMember.objects.filter(id=household_member.pk)
-                except (HouseholdMember.DoesNotExist, ClinicEligibility.DoesNotExist):
-                    household_members = HouseholdMember.objects.none()
-            kwargs["queryset"] = household_members
-        return super(ClinicVisitAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-admin.site.register(ClinicVisit, ClinicVisitAdmin)

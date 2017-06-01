@@ -1,12 +1,10 @@
 from django import forms
 
-from bhp066.apps.bcpp.base_model_form import BaseModelForm
-
 
 from ..models import ClinicEligibility
 
 
-class ClinicEligibilityForm(BaseModelForm):
+class ClinicEligibilityForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(ClinicEligibilityForm, self).clean()
@@ -32,3 +30,4 @@ class ClinicEligibilityForm(BaseModelForm):
 
     class Meta:
         model = ClinicEligibility
+        fields = '__all__'

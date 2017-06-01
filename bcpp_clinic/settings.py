@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import configparser
 import os
 from unipath import Path
+import sys
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     'bcpp.apps.EdcBaseAppConfig',
     'bcpp.apps.EdcLabAppConfig',
     'bcpp.apps.EdcLabelAppConfig',
-    'bcpp.apps.EdcMetadataAppConfig',
+    'bcpp_clinic.apps.EdcMetadataAppConfig',
     'bcpp.apps.EdcIdentifierAppConfig',
     'bcpp.apps.EdcProtocolAppConfig',
     'bcpp.apps.SurveyAppConfig',
@@ -60,17 +61,45 @@ INSTALLED_APPS = [
     'bcpp.apps.EdcBaseTestAppConfig',
     'bcpp.apps.EdcTimepointAppConfig',
     'bcpp.apps.EdcAppointmentAppConfig',
-    'bcpp.apps.EdcVisitTrackingAppConfig',
+    'bcpp_clinic.apps.EdcVisitTrackingAppConfig',
     'bcpp.apps.HouseholdAppConfig',
     'bcpp.apps.MemberAppConfig',
     'bcpp.apps.EnumerationAppConfig',
-    'bcpp.apps.BcppSubjectAppConfig',
+#     'bcpp.apps.BcppSubjectAppConfig',
     'bcpp.apps.BcppFollowAppConfig',
     'bcpp.apps.PlotAppConfig',
     'bcpp.apps.EdcSyncAppConfig',
     'bcpp.apps.EdcSyncFilesAppConfig',
     'bcpp_report.apps.AppConfig',
+    'bcpp_clinic.apps.AppConfig',
 ]
+
+
+if 'test' in sys.argv:
+    MIGRATION_MODULES = {
+        "django_crypto_fields": None,
+        "edc_call_manager": None,
+        "edc_appointment": None,
+        "edc_call_manager": None,
+        "edc_consent": None,
+        "edc_death_report": None,
+        "edc_export": None,
+        "edc_identifier": None,
+        "edc_metadata": None,
+        "edc_registration": None,
+        "edc_sync": None,
+        'edc_map': None,
+        "bcpp": None,
+        "bcpp_subject": None,
+        "plot": None,
+        "household": None,
+        "member": None,
+        "survey": None,
+        'admin': None,
+        "auth": None,
+        "edc_sync_files": None,
+        'sessions': None,
+    }
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',

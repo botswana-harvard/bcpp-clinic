@@ -1,10 +1,7 @@
 from datetime import date
 
 from django.db import models
-
 from edc_base.model_mixins.base_uuid_model import BaseUuidModel
-
-from ..managers import DailyLogManager
 
 
 class DailyLog(BaseUuidModel):
@@ -54,11 +51,6 @@ class DailyLog(BaseUuidModel):
 
     def __str__(self):
         return self.report_date.strftime('%Y-%m-%d')
-
-    def natural_key(self):
-        return (self.report_date, )
-
-    objects = DailyLogManager()
 
     class Meta:
         app_label = 'bcpp_clinic'

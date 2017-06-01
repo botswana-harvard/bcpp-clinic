@@ -1,14 +1,16 @@
 from django.contrib import admin
 
-from edc_base.modeladmin.admin import BaseModelAdmin
+from bcpp_clinic.admin_site import bcpp_clinic_admin
+from bcpp_clinic.forms.clinic_refused_member_form import ClinicRefusedMemberForm
+from bcpp_clinic.models.clinic_refused_member import ClinicRefusedMember
+from bcpp_clinic.models.clinic_eligibility import ClinicEligibility
+from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
 
-from ..forms import ClinicRefusalForm
-from ..models import ClinicRefusal, ClinicEligibility
 
+@admin.register(ClinicRefusedMember, site=bcpp_clinic_admin)
+class ClinicRefusedMemberAdmin(ModelAdminMixin, admin.ModelAdmin):
 
-class ClinicRefusalAdmin(BaseModelAdmin):
-
-    form = ClinicRefusalForm
+    form = ClinicRefusedMemberForm
 
     fields = ('clinic_eligibility',
               'refusal_date',
@@ -36,6 +38,4 @@ class ClinicRefusalAdmin(BaseModelAdmin):
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "clinic_eligibility":
             kwargs["queryset"] = ClinicEligibility.objects.filter(id__exact=request.GET.get('clinic_eligibility', 0))
-        return super(ClinicRefusalAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-admin.site.register(ClinicRefusal, ClinicRefusalAdmin)
+        return super(ClinicRefusedMemberAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)

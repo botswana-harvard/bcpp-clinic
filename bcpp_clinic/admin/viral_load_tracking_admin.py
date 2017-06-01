@@ -1,12 +1,13 @@
 from django.contrib import admin
 
-from edc_base.modeladmin.admin import BaseModelAdmin
-
 from ..forms import ViralLoadTrackingForm
 from ..models import ViralLoadTracking, ClinicVisit
+from bcpp_clinic.admin_site import bcpp_clinic_admin
+from bcpp_clinic.admin.model_admin_mixin import CrfModelAdminMixin
 
 
-class ViralLoadTrackingAdmin(BaseModelAdmin):
+@admin.register(ViralLoadTracking, site=bcpp_clinic_admin)
+class ViralLoadTrackingAdmin(CrfModelAdminMixin, admin.ModelAdmin):
 
     form = ViralLoadTrackingForm
     fields = ('clinic_visit',
@@ -27,4 +28,3 @@ class ViralLoadTrackingAdmin(BaseModelAdmin):
                 clinic_visits = ClinicVisit.objects.none()
             kwargs["queryset"] = clinic_visits
         return super(ViralLoadTrackingAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
-admin.site.register(ViralLoadTracking, ViralLoadTrackingAdmin)

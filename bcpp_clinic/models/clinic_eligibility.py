@@ -9,9 +9,6 @@ from django_crypto_fields.fields import FirstnameField
 from edc_constants.choices import YES_NO_UNKNOWN, GENDER, YES_NO_NA, YES_NO
 from edc_constants.constants import NOT_APPLICABLE
 
-
-from ..managers import BaseClinicHouseholdMemberManager
-
 from .clinic_consent import ClinicConsent
 from .clinic_enrollment_loss import ClinicEnrollmentLoss
 from .clinic_household_member import ClinicHouseholdMember
@@ -188,8 +185,6 @@ class ClinicEligibility (IdentityFieldsMixin, SurveyScheduleModelMixin, BaseUuid
                    'Always null for non-clinic members.'),
     )
 
-    objects = BaseClinicHouseholdMemberManager()
-
     history = HistoricalRecords()
 
     def save(self, *args, **kwargs):
@@ -256,7 +251,7 @@ class ClinicEligibility (IdentityFieldsMixin, SurveyScheduleModelMixin, BaseUuid
     @classmethod
     def check_for_consent(cls, identity, exception_cls=None):
         """Confirms subject with this identity has not previously consented."""
-        SubjectConsent = models.get_model('bcpp_subject', 'SubjectConsent')
+        SubjectConsent = models.get_model('bcpp_clinic', 'SubjectConsent')
         exception_cls = exception_cls or ValidationError
         clinic_consent = None
         try:

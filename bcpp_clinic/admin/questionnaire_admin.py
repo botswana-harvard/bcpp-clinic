@@ -4,10 +4,12 @@ from ..filters import ClinicCommunityListFilter
 from ..forms import QuestionnaireForm
 from ..models import Questionnaire
 
-from .clinic_visit_model_admin import ClinicVisitModelAdmin
+from bcpp_clinic.admin_site import bcpp_clinic_admin
+from bcpp_clinic.admin.model_admin_mixin import CrfModelAdminMixin
 
 
-class QuestionnaireAdmin(ClinicVisitModelAdmin):
+@admin.register(Questionnaire, site=bcpp_clinic_admin)
+class QuestionnaireAdmin(CrfModelAdminMixin, admin.ModelAdmin):
 
     form = QuestionnaireForm
     fields = (
@@ -29,4 +31,3 @@ class QuestionnaireAdmin(ClinicVisitModelAdmin):
     instructions = [("Note to Interviewer: The OTHER NON Viral LOAD visit also refers to:"
                      " A patient who may be coming in for a: i. Drug Refill, ii. CD4 count"
                      " iii. Phlebotomy, iv. Sick visit, etc ")]
-admin.site.register(Questionnaire, QuestionnaireAdmin)

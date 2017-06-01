@@ -2,10 +2,8 @@ from django import forms
 
 from ..models import Questionnaire
 
-from .base_clinic_model_form import BaseClinicModelForm
 
-
-class QuestionnaireForm (BaseClinicModelForm):
+class QuestionnaireForm (forms.ModelForm):
 
     def clean(self):
 
@@ -24,3 +22,4 @@ class QuestionnaireForm (BaseClinicModelForm):
 
     class Meta:
         model = Questionnaire
+        fields = '__all__'

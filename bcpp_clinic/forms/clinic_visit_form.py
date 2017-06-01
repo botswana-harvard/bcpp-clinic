@@ -1,9 +1,10 @@
-from bhp066.apps.bcpp.base_model_form import BaseModelForm
+from django import forms
 
 from ..models import ClinicVisit
 
 
-class ClinicVisitForm (BaseModelForm):
+class ClinicVisitForm (forms.ModelForm):
 
     class Meta:
         model = ClinicVisit
+        fields = '__all__'

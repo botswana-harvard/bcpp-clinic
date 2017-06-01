@@ -1,17 +1,11 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
-from edc_base.model.models import HistoricalRecords
-from edc_base.model_fields import OtherCharField
-
+from edc_base.model_fields.custom_fields import OtherCharField
 from edc_constants.choices import YES_NO_DWTA
 
-from edc.entry_meta_data.managers import EntryMetaDataManager
-
-
-from .clinic_visit import ClinicVisit
 from ..choices import REGISTRATION_TYPES
-from ..models import CrfModelMixin
+from ..models.crf_model_mixin import CrfModelMixin
 
 
 class Questionnaire(CrfModelMixin):
@@ -49,10 +43,6 @@ class Questionnaire(CrfModelMixin):
         blank=True,
         help_text="",
     )
-
-    history = HistoricalRecords()
-
-    entry_meta_data_manager = EntryMetaDataManager(ClinicVisit)
 
     class Meta(CrfModelMixin.Meta):
         app_label = 'bcpp_clinic'

@@ -1,12 +1,16 @@
 from django.contrib import admin
 
-from edc_consent.admin import BaseConsentModelAdmin
-
 from ..forms import ClinicConsentForm
 from ..models import ClinicConsent
+from edc_consent.modeladmin_mixins import ModelAdminConsentMixin
+from edc_base.modeladmin_mixins.model_admin_institution_mixin import ModelAdminInstitutionMixin
+from edc_base.modeladmin_mixins.model_admin_next_url_redirect_mixin import ModelAdminNextUrlRedirectMixin
+from django_revision.modeladmin_mixin import ModelAdminRevisionMixin
 
 
-class ClinicConsentAdmin(BaseConsentModelAdmin):
+class ClinicConsentAdmin(ModelAdminConsentMixin, ModelAdminRevisionMixin,
+                         ModelAdminInstitutionMixin,
+                         ModelAdminNextUrlRedirectMixin, admin.ModelAdmin):
 
     dashboard_type = 'clinic'
     form = ClinicConsentForm

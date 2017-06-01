@@ -1,4 +1,5 @@
-from edc_constants.constants import NOT_APPLICABLE, POS, NEG, IND, UNK
+from django.utils.translation import ugettext_lazy as _
+from edc_constants.constants import NOT_APPLICABLE, POS, NEG, IND, UNK, OTHER
 
 from .constants import BLOCK_PARTICIPATION, CONTINUE_PARTICIPATION
 
@@ -20,4 +21,12 @@ VERBALHIVRESULT_CHOICE = (
     (IND, _('Indeterminate')),
     (UNK, _('I am not sure')),
     ('not_answering', _('Don\'t want to answer')),
+)
+
+VISIT_UNSCHEDULED_REASON = (
+    ('Routine oncology',
+     _('Routine oncology clinic visit (i.e. planned chemo, follow-up)')),
+    ('Ill oncology', _('Ill oncology clinic visit')),
+    ('Patient called', _('Patient called to come for visit')),
+    (OTHER, _('Other, specify:')),
 )

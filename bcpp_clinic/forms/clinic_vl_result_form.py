@@ -1,11 +1,9 @@
 from django import forms
 
-from .base_clinic_model_form import BaseClinicModelForm
-
 from ..models import ClinicVlResult
 
 
-class ClinicVlResultForm (BaseClinicModelForm):
+class ClinicVlResultForm (forms.ModelForm):
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -18,3 +16,4 @@ class ClinicVlResultForm (BaseClinicModelForm):
 
     class Meta:
         model = ClinicVlResult
+        fields = '__all__'
