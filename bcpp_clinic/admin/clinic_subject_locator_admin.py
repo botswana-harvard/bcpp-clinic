@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from edc_base.fieldsets import FieldsetsModelAdminMixin
 
-from ..admin import ModelAdminMixin
+from .model_admin_mixin import ModelAdminMixin
 from ..admin_site import bcpp_clinic_admin
 from ..filters import ClinicCommunityListFilter
 from ..forms import ClinicSubjectLocatorForm

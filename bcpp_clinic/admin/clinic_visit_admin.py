@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from edc_visit_tracking.modeladmin_mixins import VisitModelAdminMixin
 
-from ..admin import ModelAdminMixin
+from .model_admin_mixin import ModelAdminMixin
 from ..admin_site import bcpp_clinic_admin
 from ..forms import ClinicVisitForm
 from ..models import ClinicRequisition

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from ..admin import ModelAdminMixin
+from .model_admin_mixin import ModelAdminMixin
 from ..admin_site import bcpp_clinic_admin
 from ..forms import ClinicEnrollmentLossForm
 from ..models import ClinicEnrollmentLoss

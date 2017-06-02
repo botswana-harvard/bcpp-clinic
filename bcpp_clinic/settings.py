@@ -177,7 +177,6 @@ USE_L10N = True
 
 USE_TZ = True
 ETC_DIR = '/etc'
-CONFIG_FILE = '{}.conf'.format('bcpp')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
@@ -191,9 +190,9 @@ GIT_DIR = BASE_DIR.ancestor(1)
 
 KEY_PATH = '/Volumes/crypto_keys'
 
-CONFIG_FILE = '{}.conf'.format('bcpp')
+CONFIG_FILE = '{}.conf'.format(APP_NAME)
 
-CONFIG_PATH = os.path.join(ETC_DIR, 'bcpp', CONFIG_FILE)
+CONFIG_PATH = os.path.join(ETC_DIR, APP_NAME, CONFIG_FILE)
 
 config = configparser.RawConfigParser()
 config.read(os.path.join(CONFIG_PATH))

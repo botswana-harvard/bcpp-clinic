@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from ..admin_site import bcpp_clinic_admin
-from ..admin import ModelAdminMixin
+from .model_admin_mixin import ModelAdminMixin
 from ..models import ClinicRefusedMember
 from ..forms import ClinicRefusedMemberForm
 
