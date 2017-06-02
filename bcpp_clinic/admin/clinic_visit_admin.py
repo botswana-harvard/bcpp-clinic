@@ -1,12 +1,11 @@
 from django.contrib import admin
 
 from ..forms import ClinicVisitForm
-from ..models import ClinicVisit, ClinicEligibility
 from edc_visit_tracking.modeladmin_mixins import VisitModelAdminMixin
 from bcpp_clinic.admin_site import bcpp_clinic_admin
 from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
-from member.models.household_member.household_member import HouseholdMember
 from bcpp_clinic.models.clinic_requisition import ClinicRequisition
+from bcpp_clinic.models.clinic_visit import ClinicVisit
 
 
 @admin.register(ClinicVisit, site=bcpp_clinic_admin)
@@ -27,24 +26,16 @@ class ClinicVisitAdmin(VisitModelAdminMixin, ModelAdminMixin, admin.ModelAdmin):
         'user_created',
     )
 
+    fieldsets = ()
+
     list_filter = (
         'report_datetime',
         'reason',
-        'household_member__household_structure__household__community',
+        'household_member__household_structure__household__plot__map_area',
         'appointment__appt_status',
-        'appointment__visit_definition__code',
+        'appointment__visit_code',
     )
 
     search_fields = (
-        'appointment__registered_subject__subject_identifier',
-        'appointment__registered_subject__registration_identifier',
-        'appointment__registered_subject__first_name',
-        'appointment__registered_subject__identity',
-    )
-
-    fields = (
-        'household_member',
-        "appointment",
-        "report_datetime",
-        "comments"
+        'appointment__subject_identifier',
     )

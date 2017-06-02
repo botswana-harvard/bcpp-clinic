@@ -37,7 +37,7 @@ class ClinicEligibilityAdmin(ModelAdminMixin, FieldsetsModelAdminMixin, admin.Mo
         "hiv_status",
     )
 
-    list_display = ('registered_subject', 'report_datetime', 'gender', 'is_eligible', 'is_consented', 'is_refused')
+    list_display = ('report_datetime', 'gender', 'is_eligible', 'is_consented', 'is_refused')
 
     list_filter = ('gender', 'is_eligible', 'is_consented', 'is_refused', 'report_datetime', 'community')
 
@@ -60,8 +60,3 @@ class ClinicEligibilityAdmin(ModelAdminMixin, FieldsetsModelAdminMixin, admin.Mo
         'first_name',
         'initials',
     )
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "registered_subject":
-            kwargs["queryset"] = RegisteredSubject.objects.filter(id__exact=request.GET.get('registered_subject', 0))
-        return super(ClinicEligibilityAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)

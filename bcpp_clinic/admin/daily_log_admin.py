@@ -37,4 +37,6 @@ class DailyLogAdmin(ModelAdminMixin, admin.ModelAdmin):
 
     list_filter = ('report_date', )
 
+    radio_fields = {}
+
     instructions = ['Complete this form once per day.']

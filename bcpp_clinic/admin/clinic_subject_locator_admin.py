@@ -14,8 +14,6 @@ class ClinicSubjectLocatorAdmin(ModelAdminMixin, FieldsetsModelAdminMixin,
 
     form = ClinicSubjectLocatorForm
     fields = (
-        'clinic_visit',
-        'date_signed',
         'mail_address',
         'home_visit_permission',
         'physical_address',
@@ -52,5 +50,5 @@ class ClinicSubjectLocatorAdmin(ModelAdminMixin, FieldsetsModelAdminMixin,
     list_filter = (
         'may_follow_up', 'may_contact_someone', 'may_call_work', "home_visit_permission", ClinicCommunityListFilter)
 
-    list_display = ('clinic_visit', 'date_signed', "home_visit_permission", "may_follow_up",
+    list_display = ("home_visit_permission", "may_follow_up",
                     "may_sms_follow_up", "has_alt_contact", "may_call_work", "may_contact_someone")
