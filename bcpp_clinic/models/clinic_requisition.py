@@ -13,8 +13,9 @@ from edc_visit_tracking.model_mixins import (
     CrfModelMixin as VisitTrackingCrfModelMixin, PreviousVisitModelMixin)
 
 from edc_map.site_mappers import site_mappers
-from bcpp_clinic.models.clinic_visit import ClinicVisit
 from edc_consent.model_mixins import RequiresConsentMixin
+
+from ..models import ClinicVisit
 
 
 class Manager(VisitTrackingCrfModelManager, SearchSlugManager):

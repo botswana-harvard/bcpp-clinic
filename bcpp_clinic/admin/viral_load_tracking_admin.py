@@ -1,9 +1,9 @@
 from django.contrib import admin
 
+from ..admin import CrfModelAdminMixin
+from ..admin_site import bcpp_clinic_admin
 from ..forms import ViralLoadTrackingForm
-from bcpp_clinic.admin_site import bcpp_clinic_admin
-from bcpp_clinic.admin.model_admin_mixin import CrfModelAdminMixin
-from bcpp_clinic.models.viral_load_tracking import ViralLoadTracking
+from ..models import ViralLoadTracking
 
 
 @admin.register(ViralLoadTracking, site=bcpp_clinic_admin)

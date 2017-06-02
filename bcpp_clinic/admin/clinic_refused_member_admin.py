@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from bcpp_clinic.admin_site import bcpp_clinic_admin
-from bcpp_clinic.forms.clinic_refused_member_form import ClinicRefusedMemberForm
-from bcpp_clinic.models.clinic_refused_member import ClinicRefusedMember
-from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
+from ..admin_site import bcpp_clinic_admin
+from ..admin import ModelAdminMixin
+from ..models import ClinicRefusedMember
+from ..forms import ClinicRefusedMemberForm
 
 
 @admin.register(ClinicRefusedMember, site=bcpp_clinic_admin)

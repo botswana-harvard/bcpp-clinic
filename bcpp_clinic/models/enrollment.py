@@ -2,15 +2,15 @@ from django.db import models
 from django.utils import timezone
 
 
-from ..exceptions import EnrollmentError
-from ..managers import EnrollmentManager as BaseEnrollmentManager
 from django.db.models.deletion import ProtectedError
-from bcpp_subject.models.enrollment import EnrollmentProxyModelManager
 from member.models.household_member import HouseholdMember
 from edc_visit_schedule.model_mixins import EnrollmentModelMixin
 from survey.model_mixins import SurveyModelMixin
 from edc_base.model_mixins.base_uuid_model import BaseUuidModel
 from edc_appointment.model_mixins import CreateAppointmentsMixin
+
+from ..exceptions import EnrollmentError
+from ..managers import EnrollmentManager as BaseEnrollmentManager
 
 
 class EnrollmentCLinic(EnrollmentModelMixin, SurveyModelMixin,
@@ -35,8 +35,6 @@ class EnrollmentCLinic(EnrollmentModelMixin, SurveyModelMixin,
     report_datetime = models.DateTimeField(
         default=timezone.now,
         editable=False)
-
-    objects = EnrollmentProxyModelManager()
 
     class Meta:
         visit_schedule_name = 'visit_schedule_clinic.clinic_schedule'

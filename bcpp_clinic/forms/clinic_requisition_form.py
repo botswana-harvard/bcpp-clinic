@@ -1,14 +1,12 @@
 from django import forms
 
-from edc_lab.forms import RequisitionFormMixin
-from bcpp_clinic.models.clinic_requisition import ClinicRequisition
-from bcpp_subject.forms.form_mixins import SubjectModelFormMixin
-
 from edc_base.modelform_mixins import (
     CommonCleanModelFormMixin, OtherSpecifyValidationMixin,
     ApplicableValidationMixin, Many2ManyModelValidationMixin,
     RequiredFieldValidationMixin, JSONModelFormMixin)
-from bcpp_clinic.models.clinic_visit import ClinicVisit
+from edc_lab.forms import RequisitionFormMixin
+
+from ..models import ClinicRequisition, ClinicVisit
 
 
 class SubjectModelFormMixin(CommonCleanModelFormMixin,

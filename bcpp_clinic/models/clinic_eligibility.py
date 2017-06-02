@@ -4,29 +4,35 @@ from dateutil.relativedelta import relativedelta
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MaxLengthValidator, RegexValidator
 from django.db import models
-
 from django_crypto_fields.fields import FirstnameField
+
+from edc_base.model_managers.historical_records import HistoricalRecords
+from edc_base.model_mixins.base_uuid_model import BaseUuidModel
+from edc_base.model_validators.date import datetime_not_future
+from edc_base.model_validators.dob import dob_not_future
+from edc_base.utils import get_utcnow
+
+from edc_consent.field_mixins.bw.identity_fields_mixin import IdentityFieldsMixin
+
 from edc_constants.choices import YES_NO_UNKNOWN, GENDER, YES_NO_NA, YES_NO
 from edc_constants.constants import NOT_APPLICABLE
 
+from edc_map.site_mappers import site_mappers
+
+from household.models.household_structure.household_structure import HouseholdStructure
+
+from member.choices import INABILITY_TO_PARTICIPATE_REASON
+from member.models.household_member.household_member import HouseholdMember
+
+from survey.model_mixins import SurveyScheduleModelMixin
+from survey.site_surveys import site_surveys
+
+from ..choices import VERBALHIVRESULT_CHOICE
+from ..constants import CLINIC_RBD
 from .clinic_consent import ClinicConsent
 from .clinic_enrollment_loss import ClinicEnrollmentLoss
 from .clinic_household_member import ClinicHouseholdMember
-from member.models.household_member.household_member import HouseholdMember
-from edc_base.model_mixins.base_uuid_model import BaseUuidModel
-from survey.model_mixins import SurveyScheduleModelMixin
-from edc_base.utils import get_utcnow
-from member.choices import INABILITY_TO_PARTICIPATE_REASON
-from bcpp_clinic.choices import VERBALHIVRESULT_CHOICE
-from edc_map.site_mappers import site_mappers
-from household.models.household_structure.household_structure import HouseholdStructure
-from survey.site_surveys import site_surveys
-from bcpp_clinic.constants import CLINIC_RBD
-from edc_base.model_validators.date import datetime_not_future
-from edc_base.model_validators.dob import dob_not_future
-from edc_consent.field_mixins.bw.identity_fields_mixin import IdentityFieldsMixin
-from edc_base.model_managers.historical_records import HistoricalRecords
-from bcpp_clinic.models.clinic_refused_member import ClinicRefusedMember
+from .clinic_refused_member import ClinicRefusedMember
 
 
 class ClinicEligibility (IdentityFieldsMixin, SurveyScheduleModelMixin, BaseUuidModel):

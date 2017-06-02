@@ -1,12 +1,11 @@
 from django.contrib import admin
 
-from ..forms import ClinicEligibilityForm
+from edc_base.fieldsets import FieldsetsModelAdminMixin
 
-from edc_registration.models import RegisteredSubject
-from bcpp_clinic.models.clinic_eligibility import ClinicEligibility
-from edc_base.fieldsets.fieldsets_modeladmin_mixin import FieldsetsModelAdminMixin
-from bcpp_clinic.admin_site import bcpp_clinic_admin
-from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
+from ..admin_site import bcpp_clinic_admin
+from ..forms import ClinicEligibilityForm
+from ..models import ClinicEligibility
+from .model_admin_mixin import ModelAdminMixin
 
 
 @admin.register(ClinicEligibility, site=bcpp_clinic_admin)

@@ -1,12 +1,13 @@
 from django.contrib import admin
 
+from django_revision.modeladmin_mixin import ModelAdminRevisionMixin
+from edc_base.modeladmin_mixins import ModelAdminInstitutionMixin
+from edc_base.modeladmin_mixins import ModelAdminNextUrlRedirectMixin
+from edc_consent.modeladmin_mixins import ModelAdminConsentMixin
+
+from ..admin_site import bcpp_clinic_admin
 from ..forms import ClinicConsentForm
 from ..models import ClinicConsent
-from edc_consent.modeladmin_mixins import ModelAdminConsentMixin
-from edc_base.modeladmin_mixins.model_admin_institution_mixin import ModelAdminInstitutionMixin
-from edc_base.modeladmin_mixins.model_admin_next_url_redirect_mixin import ModelAdminNextUrlRedirectMixin
-from django_revision.modeladmin_mixin import ModelAdminRevisionMixin
-from bcpp_clinic.admin_site import bcpp_clinic_admin
 
 
 @admin.register(ClinicConsent, site=bcpp_clinic_admin)

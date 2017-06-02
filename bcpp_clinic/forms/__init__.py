@@ -8,3 +8,4 @@ from .clinic_vl_result_form import ClinicVlResultForm
 from .daily_log_form import DailyLogForm
 from .questionnaire_form import QuestionnaireForm
 from .viral_load_tracking_form import ViralLoadTrackingForm
+from .clinic_requisition_form import ClinicRequisitionForm

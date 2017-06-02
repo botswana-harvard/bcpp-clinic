@@ -4,7 +4,7 @@ from django.db import models
 from edc_base.model_managers import HistoricalRecords
 from edc_base.model_fields import InitialsField
 
-from bcpp_clinic.models.crf_model_mixin import CrfModelMixin
+from ..models import CrfModelMixin
 
 
 class ClinicVlResult(CrfModelMixin):

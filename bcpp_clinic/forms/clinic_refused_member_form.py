@@ -1,5 +1,6 @@
 from django import forms
-from bcpp_clinic.models.clinic_refused_member import ClinicRefusedMember
+
+from ..models import ClinicRefusedMember
 
 
 class ClinicRefusedMemberForm(forms.ModelForm):

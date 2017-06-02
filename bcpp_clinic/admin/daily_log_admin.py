@@ -1,9 +1,9 @@
 from django.contrib import admin
 
+from ..admin import ModelAdminMixin
+from ..admin_site import bcpp_clinic_admin
 from ..forms import DailyLogForm
 from ..models import DailyLog
-from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
-from bcpp_clinic.admin_site import bcpp_clinic_admin
 
 
 @admin.register(DailyLog, site=bcpp_clinic_admin)

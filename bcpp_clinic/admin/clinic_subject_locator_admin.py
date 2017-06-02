@@ -1,11 +1,12 @@
 from django.contrib import admin
 
+from edc_base.fieldsets import FieldsetsModelAdminMixin
+
+from ..admin import ModelAdminMixin
+from ..admin_site import bcpp_clinic_admin
 from ..filters import ClinicCommunityListFilter
 from ..forms import ClinicSubjectLocatorForm
 from ..models import ClinicSubjectLocator
-from edc_base.fieldsets.fieldsets_modeladmin_mixin import FieldsetsModelAdminMixin
-from bcpp_clinic.admin_site import bcpp_clinic_admin
-from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
 
 
 @admin.register(ClinicSubjectLocator, site=bcpp_clinic_admin)

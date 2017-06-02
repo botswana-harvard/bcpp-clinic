@@ -2,9 +2,10 @@ from django.db import models
 
 from edc_constants.choices import YES_NO
 
-from .crf_model_mixin import CrfModelMixin
 from edc_lab.choices import REASON_NOT_DRAWN
 from edc_base.model_fields.custom_fields import InitialsField
+
+from .crf_model_mixin import CrfModelMixin
 
 
 class ViralLoadTracking(CrfModelMixin):

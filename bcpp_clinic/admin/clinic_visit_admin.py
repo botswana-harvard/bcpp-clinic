@@ -1,11 +1,13 @@
 from django.contrib import admin
 
-from ..forms import ClinicVisitForm
+
 from edc_visit_tracking.modeladmin_mixins import VisitModelAdminMixin
-from bcpp_clinic.admin_site import bcpp_clinic_admin
-from bcpp_clinic.admin.model_admin_mixin import ModelAdminMixin
-from bcpp_clinic.models.clinic_requisition import ClinicRequisition
-from bcpp_clinic.models.clinic_visit import ClinicVisit
+
+from ..admin import ModelAdminMixin
+from ..admin_site import bcpp_clinic_admin
+from ..forms import ClinicVisitForm
+from ..models import ClinicRequisition
+from ..models import ClinicVisit
 
 
 @admin.register(ClinicVisit, site=bcpp_clinic_admin)

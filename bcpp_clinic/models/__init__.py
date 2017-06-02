@@ -15,3 +15,4 @@ from .questionnaire import Questionnaire
 from .viral_load_tracking import ViralLoadTracking
 from .daily_log import DailyLog
 from .crf_model_mixin import CrfModelMixin
+from .clinic_requisition import ClinicRequisition

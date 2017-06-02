@@ -8,10 +8,10 @@ from edc_lab.admin import (
     requisition_identifier_fieldset,
     requisition_identifier_fields)
 
+from ..admin import CrfModelAdminMixin
 from ..admin_site import bcpp_clinic_admin
 from ..forms import ClinicRequisitionForm
-from bcpp_clinic.admin.model_admin_mixin import CrfModelAdminMixin
-from bcpp_clinic.models.clinic_requisition import ClinicRequisition
+from ..models import ClinicRequisition
 
 
 @admin.register(ClinicRequisition, site=bcpp_clinic_admin)

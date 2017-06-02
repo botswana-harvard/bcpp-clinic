@@ -1,11 +1,10 @@
 from django.contrib import admin
 
+from ..admin import CrfModelAdminMixin
+from ..admin_site import bcpp_clinic_admin
 from ..filters import ClinicCommunityListFilter
 from ..forms import QuestionnaireForm
 from ..models import Questionnaire
-
-from bcpp_clinic.admin_site import bcpp_clinic_admin
-from bcpp_clinic.admin.model_admin_mixin import CrfModelAdminMixin
 
 
 @admin.register(Questionnaire, site=bcpp_clinic_admin)
