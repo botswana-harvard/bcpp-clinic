@@ -12,8 +12,8 @@ from ..utils import get_clinic_member
 fake = Faker()
 
 
-@tag('TestClinicEligibility')
-class TestClinicEligibility(TestCase):
+@tag('TestCreateClinicEligibility')
+class TestCreateClinicEligibility(TestCase):
 
     def setUp(self):
         pass
