@@ -17,6 +17,7 @@ class ClinicEligibilityAdmin(ModelAdminMixin, FieldsetsModelAdminMixin, admin.Mo
                     'Eligibility status of the subject. After entering the required items, click SAVE.']
 
     fields = (
+        'clinic_household_member'
         'report_datetime',
         'first_name',
         'initials',

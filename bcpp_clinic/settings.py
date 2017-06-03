@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tz_detect',
     'edc_offstudy',
     'django_crypto_fields.apps.AppConfig',
     'django_revision.apps.AppConfig',
@@ -60,13 +61,12 @@ INSTALLED_APPS = [
     'bcpp.apps.EdcDeviceAppConfig',
     'bcpp.apps.EdcBaseTestAppConfig',
     'bcpp.apps.EdcTimepointAppConfig',
-#     'bcpp.apps.EdcAppointmentAppConfig',
     'edc_appointment.apps.AppConfig',
     'bcpp_clinic.apps.EdcVisitTrackingAppConfig',
     'bcpp.apps.HouseholdAppConfig',
     'bcpp.apps.MemberAppConfig',
     'bcpp.apps.EnumerationAppConfig',
-#     'bcpp.apps.BcppSubjectAppConfig',
+    'bcpp.apps.BcppSubjectAppConfig',
     'bcpp.apps.BcppFollowAppConfig',
     'bcpp.apps.PlotAppConfig',
     'bcpp.apps.EdcSyncAppConfig',
@@ -91,7 +91,7 @@ if 'test' in sys.argv:
         "edc_sync": None,
         'edc_map': None,
         "bcpp": None,
-#         "bcpp_subject": None,
+        "bcpp_subject": None,
         "plot": None,
         "household": None,
         "member": None,
@@ -169,7 +169,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Gaborone'
 
 USE_I18N = True
 

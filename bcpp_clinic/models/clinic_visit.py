@@ -9,10 +9,11 @@ from member.models.household_member.household_member import HouseholdMember
 from survey.model_mixins import SurveyModelMixin
 
 from ..choices import VISIT_UNSCHEDULED_REASON
+from edc_offstudy.model_mixins import OffstudyMixin
 
 
-class ClinicVisit(VisitModelMixin, CreatesMetadataModelMixin,
-                  RequiresConsentMixin, SurveyModelMixin, BaseUuidModel):
+class ClinicVisit(VisitModelMixin, OffstudyMixin, CreatesMetadataModelMixin,
+                  SurveyModelMixin, RequiresConsentMixin, BaseUuidModel):
 
     """A model completed by the user that captures the covering
     information for the data collected for this timepoint/appointment,

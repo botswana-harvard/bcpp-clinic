@@ -11,9 +11,10 @@ from edc_consent.field_mixins.vulnerability_fields_mixin import VulnerabilityFie
 from edc_consent.model_mixins import ConsentModelMixin
 
 from edc_constants.choices import YES_NO
-from edc_dashboard.model_mixins import SearchSlugModelMixin
+
 from edc_identifier.model_mixins import NonUniqueSubjectIdentifierModelMixin
 from edc_registration.model_mixins.updates_or_creates_registered_subject_model_mixin import UpdatesOrCreatesRegistrationModelMixin
+from edc_search.model_mixins import SearchSlugModelMixin
 from member.models.household_member.household_member import HouseholdMember
 from survey.model_mixins import SurveyScheduleModelMixin
 

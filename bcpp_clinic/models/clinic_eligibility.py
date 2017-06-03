@@ -22,7 +22,6 @@ from edc_map.site_mappers import site_mappers
 from household.models.household_structure.household_structure import HouseholdStructure
 
 from member.choices import INABILITY_TO_PARTICIPATE_REASON
-from member.models.household_member.household_member import HouseholdMember
 
 from survey.model_mixins import SurveyScheduleModelMixin
 from survey.site_surveys import site_surveys
@@ -39,8 +38,8 @@ class ClinicEligibility (IdentityFieldsMixin, SurveyScheduleModelMixin, BaseUuid
     """A model completed by the user that confirms and saves eligibility
     information for potential participant."""
 
-    household_member = models.OneToOneField(
-        HouseholdMember, on_delete=models.PROTECT)
+    clinic_household_member = models.OneToOneField(
+        ClinicHouseholdMember, on_delete=models.PROTECT)
 
     report_datetime = models.DateTimeField(
         verbose_name='Report date',

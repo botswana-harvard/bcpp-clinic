@@ -55,8 +55,8 @@ class TestPlotMapper(Mapper):
     map_code = '01'
     pair = 0
     landmarks = TEST_LANDMARKS
-    center_lat = -24.557709
-    center_lon = 25.807963
+    center_lat = -24.639128
+    center_lon = 25.921771
     radius = 100.5
     location_boundary = ()
     intervention = True

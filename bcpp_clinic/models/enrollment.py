@@ -37,6 +37,7 @@ class EnrollmentCLinic(EnrollmentModelMixin, SurveyModelMixin,
         editable=False)
 
     class Meta:
-        visit_schedule_name = 'visit_schedule_clinic.clinic_schedule'
+        visit_schedule_name = 'clinic_visit_schedule.clinic_schedule'
+        consent_model = 'bcpp_clinic.clinicconsent'
         verbose_name = 'Enrollment Clinic'
         verbose_name_plural = 'Enrollment Clinic'

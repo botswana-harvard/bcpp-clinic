@@ -25,4 +25,5 @@ class EdcMetadataAppConfig(BaseEdcMetadataAppConfig):
 
 class EdcVisitTrackingAppConfig(BaseEdcVisitTrackingAppConfig):
     visit_models = {
-        'bcpp_clinic': ('clinic_visit', 'bcpp_clinic.clinicvisit')}
+        'bcpp_clinic': ('clinic_visit', 'bcpp_clinic.clinicvisit'),
+        'bcpp_subject': ('subject_visit', 'bcpp_subject.subjectvisit')}

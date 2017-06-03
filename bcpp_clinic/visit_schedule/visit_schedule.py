@@ -20,15 +20,13 @@ except AttributeError as e:
             site_mappers.current_map_area, str(e))))
 
 
-visit_schedule_clinic = VisitSchedule(
-    name='visit_schedule_clinic',
+clinic_visit_schedule = VisitSchedule(
+    name='clinic_visit_schedule',
     verbose_name='BCPP Clinic Survey',
     app_label='bcpp_clinic',
-    default_enrollment_model='bcpp_clinic.enrollmentclinic',
-    default_disenrollment_model='bcpp_clinic.disenrollmentclinic',
     visit_model='bcpp_clinic.clinicvisit',
     offstudy_model='bcpp_clinic.clinicoffstudy',
     previous_visit_schedule=None,
 )
 
-visit_schedule_clinic.add_schedule(clinic_schedule)
+clinic_visit_schedule.add_schedule(clinic_schedule)

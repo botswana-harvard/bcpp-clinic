@@ -18,7 +18,7 @@ class TestClinicEligibility(MemberMixin, TestCase):
     def setUp(self):
         pass
 
-    def test_clinic_eligibility(self):
+    def test_creat(self):
         options = {}
         options.update(
             first_name='TEST',
@@ -27,7 +27,3 @@ class TestClinicEligibility(MemberMixin, TestCase):
             age_in_years=22,
             gender=MALE)
         clinic_household_member = get_clinic_member(**options)
-        mommy.make_recipe(
-            'bcpp_clinic.cliniceligibility',
-            household_member=clinic_household_member)
-        self.assertEqual(ClinicEligibility.objects.all().count(), 1)

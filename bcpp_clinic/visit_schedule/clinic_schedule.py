@@ -5,7 +5,11 @@ from .requisitions import requisitions
 from bcpp_clinic.visit_schedule import crfs_clinic
 
 
-clinic_schedule = Schedule(name='clinic_schedule', title='CLINIC')
+clinic_schedule = Schedule(
+    name='clinic_schedule',
+    title='CLINIC',
+    enrollment_model='bcpp_clinic.enrollmentclinic',
+    disenrollment_model='bcpp_clinic.disenrollmentclinic',)
 
 clinic_schedule.add_visit(
     code='C1',
