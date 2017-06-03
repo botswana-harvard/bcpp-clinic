@@ -19,15 +19,14 @@ class TestClinicEligibility(MemberMixin, TestCase):
         pass
 
     def test_clinic_eligibility(self):
-        options = {}
-        options.update(
-            first_name='TEST',
-            initials='TT',
-            report_datetime=get_utcnow(),
-            age_in_years=22,
-            gender=MALE)
-        clinic_household_member = get_clinic_member(**options)
+#         options = {}
+#         options.update(
+#             first_name='TEST',
+#             initials='TT',
+#             report_datetime=get_utcnow(),
+#             age_in_years=22,
+#             gender=MALE)
+#         clinic_household_member = get_clinic_member(**options)
         mommy.make_recipe(
-            'bcpp_clinic.cliniceligibility',
-            household_member=clinic_household_member)
+            'bcpp_clinic.cliniceligibility')
         self.assertEqual(ClinicEligibility.objects.all().count(), 1)

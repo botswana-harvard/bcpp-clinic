@@ -11,6 +11,9 @@ class ClinicHouseholdMember(HouseholdMember):
             self.gender, self.household_structure.survey_schedule,
             'clinic-member')
 
+    def common_clean(self):
+        pass
+
     class Meta(HouseholdMember.Meta):
         app_label = 'bcpp_clinic'
         verbose_name = "Clinic Household Member"

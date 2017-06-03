@@ -1,24 +1,17 @@
 from django.test import TestCase
 
-from model_mommy import mommy
-
-from faker import Faker
-
-from member.tests.mixins import MemberMixin
 from edc_constants.constants import MALE
-from ..models import ClinicEligibility
 from edc_base.utils import get_utcnow
 from bcpp_clinic.utils import get_clinic_member
+from ..models import ClinicHouseholdMember
 
-fake = Faker()
 
-
-class TestClinicEligibility(MemberMixin, TestCase):
+class TestCreateClinicMember(TestCase):
 
     def setUp(self):
         pass
 
-    def test_creat(self):
+    def test_create_clinic_member(self):
         options = {}
         options.update(
             first_name='TEST',
@@ -26,4 +19,5 @@ class TestClinicEligibility(MemberMixin, TestCase):
             report_datetime=get_utcnow(),
             age_in_years=22,
             gender=MALE)
-        clinic_household_member = get_clinic_member(**options)
+        get_clinic_member(**options)
+        self.assertEqual(ClinicHouseholdMember.objects.all().count(), 1)

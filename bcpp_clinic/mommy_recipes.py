@@ -20,7 +20,6 @@ cliniceligibility = Recipe(
     part_time_resident=YES,
     initials='EW',
     gender=FEMALE,
-    household_residency=YES,
     has_identity=YES,
     identity=seq('12315678'),
     confirm_identity=seq('12315678'),
@@ -28,7 +27,6 @@ cliniceligibility = Recipe(
     citizen=YES,
     literacy=YES,
     guardian=NOT_APPLICABLE,
-    confirm_participation=NOT_APPLICABLE,
 )
 
 clinichouseholdmember = Recipe(

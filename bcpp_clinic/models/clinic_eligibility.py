@@ -1,6 +1,7 @@
 from uuid import uuid4
 from dateutil.relativedelta import relativedelta
 
+from django.apps import apps as django_apps
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MaxLengthValidator, RegexValidator
 from django.db import models
@@ -202,14 +203,14 @@ class ClinicEligibility (IdentityFieldsMixin, SurveyScheduleModelMixin, BaseUuid
             else:
                 self.additional_key = None
             self.check_for_consent(self.identity)
-            if self.identity:
-                if not self.id:
-                    self.check_for_known_identity(self.identity)
+#             if self.identity:
+#                 if not self.id:
+#                     self.check_for_known_identity(self.identity)
             self.age_in_years = relativedelta(self.report_datetime.date(), self.dob).years
             self.is_eligible, self.loss_reason = self.passes_enrollment_criteria()
             self.community = site_mappers.current_map_area
-            if not self.household_member:
-                self.household_member = self.clinic_household_member
+            if not self.clinic_household_member:
+                self.clinic_household_member = self.get_clinic_household_member
         super(ClinicEligibility, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -217,12 +218,12 @@ class ClinicEligibility (IdentityFieldsMixin, SurveyScheduleModelMixin, BaseUuid
             self.first_name, self.initials, self.gender, self.age_in_years)
 
     @property
-    def clinic_household_member(self):
+    def get_clinic_household_member(self):
         """Returns the household_member and will create if one does not exist.
 
         ClinicHouseholdMember is a proxy model of HouseholdMember."""
         try:
-            clinic_household_member = ClinicHouseholdMember.objects.get(pk=self.household_member.pk)
+            clinic_household_member = ClinicHouseholdMember.objects.get(pk=self.clinic_household_member.pk)
         except (ClinicHouseholdMember.DoesNotExist, AttributeError):
             schedule_name = site_surveys.get_survey_schedules(current=True)[0]
             try:
@@ -248,15 +249,15 @@ class ClinicEligibility (IdentityFieldsMixin, SurveyScheduleModelMixin, BaseUuid
                     eligible_subject=True,
                     additional_key=self.additional_key)
 
-        if not self.household_member:
-            # only set if self.household_member was None
-            self.household_member = clinic_household_member
-        return self.household_member
+        if not self.clinic_household_member:
+            # only set if self.clinic_household_member was None
+            self.clinic_household_member = clinic_household_member
+        return self.clinic_household_member
 
     @classmethod
     def check_for_consent(cls, identity, exception_cls=None):
         """Confirms subject with this identity has not previously consented."""
-        SubjectConsent = models.get_model('bcpp_clinic', 'SubjectConsent')
+        ClinicConsent = django_apps.get_model('bcpp_clinic', 'ClinicConsent')
         exception_cls = exception_cls or ValidationError
         clinic_consent = None
         try:
@@ -268,16 +269,16 @@ class ClinicEligibility (IdentityFieldsMixin, SurveyScheduleModelMixin, BaseUuid
         except ClinicConsent.DoesNotExist:
             pass
         try:
-            subject_consent = SubjectConsent.objects.get(identity=identity)
+            clinic_consent = ClinicConsent.objects.get(identity=identity)
             raise exception_cls(
                 'A Household member was consented during BHS with study identifier {} on {}. '
                 'Eligibility checklist may not be completed for personal identifier {}.'.format(
-                    subject_consent.subject_identifier,
-                    subject_consent.modified,
-                    subject_consent.identity))
-        except SubjectConsent.DoesNotExist:
+                    clinic_consent.subject_identifier,
+                    clinic_consent.modified,
+                    clinic_consent.identity))
+        except ClinicConsent.DoesNotExist:
             pass
-        except SubjectConsent.MultipleObjectsReturned:
+        except ClinicConsent.MultipleObjectsReturned:
             pass
         return None
 
