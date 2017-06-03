@@ -14,11 +14,15 @@ import os
 from unipath import Path
 import sys
 
+from django.core.management.color import color_style
+from pathlib import PurePath
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 
-APP_NAME = 'bcpp_clinic'
+style = color_style()
+
+APP_NAME = 'bcpp'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -29,8 +33,19 @@ SECRET_KEY = '*3izpxc9!j7)(a*2+_sw%_10gx*_$z1-%bf2mz%!pkd%@*%$1)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+CONFIG_FILE = '{}.conf'.format(APP_NAME)
+if DEBUG:
+    ETC_DIR = str(PurePath(BASE_DIR).joinpath('etc'))
+    ETC_DIR = '/etc'
+else:
+    ETC_DIR = '/etc'
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+CONFIG_PATH = os.path.join(ETC_DIR, APP_NAME, CONFIG_FILE)
+sys.stdout.write(style.SUCCESS('Reading config from {}\n'.format(CONFIG_PATH)))
+
+config = configparser.RawConfigParser()
+config.read(os.path.join(CONFIG_PATH))
 
 # Application definition
 
@@ -43,6 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tz_detect',
     'edc_offstudy',
+    'rest_framework',
+    'rest_framework.authtoken',
     'django_crypto_fields.apps.AppConfig',
     'django_revision.apps.AppConfig',
     'edc_dashboard.apps.AppConfig',
