@@ -6,8 +6,8 @@ from model_mommy.recipe import Recipe, seq
 
 from edc_base_test.utils import get_utcnow
 from edc_constants.constants import NOT_APPLICABLE, YES, FEMALE, ALIVE
+from member.constants import ABLE_TO_PARTICIPATE
 
-from .constants import ABLE_TO_PARTICIPATE
 from .models import ClinicEligibility, ClinicHouseholdMember
 
 
@@ -24,6 +24,7 @@ cliniceligibility = Recipe(
     identity=seq('12315678'),
     confirm_identity=seq('12315678'),
     identity_type='OMANG',
+    inability_to_participate=ABLE_TO_PARTICIPATE,
     citizen=YES,
     literacy=YES,
     guardian=NOT_APPLICABLE,
