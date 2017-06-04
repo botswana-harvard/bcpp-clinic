@@ -5,7 +5,7 @@ from faker import Faker
 from model_mommy.recipe import Recipe, seq
 
 from edc_base_test.utils import get_utcnow
-from edc_constants.constants import NOT_APPLICABLE, YES, FEMALE, ALIVE, NEG
+from edc_constants.constants import NOT_APPLICABLE, YES, FEMALE, ALIVE, POS
 from member.constants import ABLE_TO_PARTICIPATE
 
 from .models import ClinicEligibility, ClinicHouseholdMember
@@ -21,6 +21,7 @@ cliniceligibility = Recipe(
     initials='EW',
     gender=FEMALE,
     has_identity=YES,
+    hiv_status=POS,
     identity=seq('12315678'),
     confirm_identity=seq('12315678'),
     identity_type='OMANG',
@@ -37,7 +38,6 @@ clinichouseholdmember = Recipe(
     initials='XX',
     inability_to_participate=ABLE_TO_PARTICIPATE,
     survival_status=ALIVE,
-    hiv_status=NEG,
     age_in_years=25,
     study_resident=YES,
     gender=FEMALE,
