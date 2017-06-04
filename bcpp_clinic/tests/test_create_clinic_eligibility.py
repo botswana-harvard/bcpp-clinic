@@ -1,15 +1,12 @@
 from django.test import TestCase, tag
 
 from model_mommy import mommy
-from faker import Faker
 
 from edc_base.utils import get_utcnow
 from edc_constants.constants import MALE
 
 from ..models import ClinicEligibility
 from ..utils import get_clinic_member
-
-fake = Faker()
 
 
 @tag('TestCreateClinicEligibility')
