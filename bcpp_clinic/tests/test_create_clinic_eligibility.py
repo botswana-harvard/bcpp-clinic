@@ -33,8 +33,6 @@ class TestCreateClinicEligibility(TestCase):
         mommy.make_recipe(
             'bcpp_clinic.cliniceligibility',
             clinic_household_member=clinic_household_member)
-        print(ClinicEligibility.objects.all()[0].is_eligible, 'The status is here')
-        print(ClinicEligibility.objects.all()[0].loss_reason, 'The loss reason')
         self.assertEqual(ClinicEligibility.objects.all().count(), 1)
 
     def test_create_two_clinic_eligibility(self):
