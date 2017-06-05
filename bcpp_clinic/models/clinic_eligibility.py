@@ -16,13 +16,14 @@ from edc_base.utils import get_utcnow
 from edc_consent.field_mixins.bw.identity_fields_mixin import IdentityFieldsMixin
 
 from edc_constants.choices import YES_NO_UNKNOWN, GENDER, YES_NO_NA, YES_NO
-from edc_constants.constants import NOT_APPLICABLE
+from edc_constants.constants import NOT_APPLICABLE, NEG, POS, YES, NO
 
 from edc_map.site_mappers import site_mappers
 
 from household.models.household_structure.household_structure import HouseholdStructure
 
 from member.choices import INABILITY_TO_PARTICIPATE_REASON
+from member.constants import ABLE_TO_PARTICIPATE
 
 from survey.model_mixins import SurveyScheduleModelMixin
 from survey.site_surveys import site_surveys
@@ -290,28 +291,28 @@ class ClinicEligibility (IdentityFieldsMixin, SurveyScheduleModelMixin, BaseUuid
             loss_reason.append('Too young (<16).')
         if self.age_in_years > 64:
             loss_reason.append('Too old (>64).')
-        if self.has_identity == 'No' or not self.identity:
+        if self.has_identity == NO or not self.identity:
             loss_reason.append('No valid identity.')
-        if self.part_time_resident == 'No':
+        if self.part_time_resident == NO:
             loss_reason.append('Not resident.')
         if self.part_time_resident == 'Unknown':
             loss_reason.append('Residency unknown.')
-        if self.citizen == 'No' and self.legal_marriage == 'No':
+        if self.citizen == NO and self.legal_marriage == NO:
             loss_reason.append('Not a citizen and not married to a citizen.')
-        if (self.citizen.lower() == 'no' and self.legal_marriage.lower() == 'yes' and
-                self.marriage_certificate == 'No'):
+        if (self.citizen == NO and self.legal_marriage == YES and
+                self.marriage_certificate == NO):
             loss_reason.append('Not a citizen, married to a citizen but does not have a marriage certificate.')
-        if self.literacy == 'No':
+        if self.literacy == NO:
             loss_reason.append('Illiterate with no literate witness.')
         if self.literacy == 'Unknown':
             loss_reason.append('Literacy unknown.')
-        if self.age_in_years < 18 and self.guardian != 'Yes':
+        if self.age_in_years < 18 and self.guardian != YES:
             loss_reason.append('Minor without guardian available.')
-        if self.inability_to_participate != 'N/A':
+        if self.inability_to_participate != ABLE_TO_PARTICIPATE:
             loss_reason.append('Mental Incapacity/Deaf/Mute/Too sick.')
-        if self.hiv_status == 'NEG':
+        if self.hiv_status == NEG:
             loss_reason.append('HIV Negative.')
-        if self.hiv_status != 'POS' and self.hiv_status != 'NEG':
+        if self.hiv_status != POS and self.hiv_status != NEG:
             loss_reason.append('HIV status unknown.')
         if not self.identity:
             loss_reason.append('Identity unknown.')
@@ -328,17 +329,17 @@ class ClinicEligibility (IdentityFieldsMixin, SurveyScheduleModelMixin, BaseUuid
             reason.append('Minor.')
         if self.age_in_years > 64:
             reason.append('Too old.')
-        if self.part_time_resident == 'No':
+        if self.part_time_resident == NO:
             reason.append('Not resident.')
         if self.part_time_resident == 'Unknown':
             reason.append('Residency unknown.')
-        if self.legal_marriage == 'No':
+        if self.legal_marriage == NO:
             reason.append('Not a citizen and not married to a citizen.')
         if self.inability_to_participate:
             reason.append('Mental Incapacity/Deaf/Mute/Too sick.')
-        if self.hiv_status == 'NEG':
+        if self.hiv_status == NEG:
             reason.append('HIV Negative.')
-        if self.hiv_status != 'POS' and self.hiv_status != 'NEG':
+        if self.hiv_status != POS and self.hiv_status != NEG:
             reason.append('HIV status unknown.')
         if not self.identity:
             reason.append('Identity unknown.')
