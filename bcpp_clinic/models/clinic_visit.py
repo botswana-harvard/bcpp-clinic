@@ -5,11 +5,12 @@ from edc_base.model_mixins.base_uuid_model import BaseUuidModel
 from edc_consent.model_mixins import RequiresConsentMixin
 from edc_metadata.model_mixins.creates.creates_metadata_model_mixin import CreatesMetadataModelMixin
 from edc_visit_tracking.model_mixins.visit_model_mixin import VisitModelMixin
-from member.models.household_member.household_member import HouseholdMember
 from survey.model_mixins import SurveyModelMixin
 
 from ..choices import VISIT_UNSCHEDULED_REASON
 from edc_offstudy.model_mixins import OffstudyMixin
+
+from ..models import ClinicHouseholdMember
 
 
 class ClinicVisit(VisitModelMixin, OffstudyMixin, CreatesMetadataModelMixin,
@@ -22,8 +23,8 @@ class ClinicVisit(VisitModelMixin, OffstudyMixin, CreatesMetadataModelMixin,
 
     appointment = models.OneToOneField(Appointment, on_delete=models.PROTECT)
 
-    household_member = models.ForeignKey(
-        HouseholdMember, on_delete=models.PROTECT)
+    clinic_household_member = models.ForeignKey(
+        ClinicHouseholdMember, on_delete=models.PROTECT)
 
     reason_unscheduled = models.CharField(
         verbose_name=(

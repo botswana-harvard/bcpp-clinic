@@ -33,7 +33,7 @@ class ClinicVisitAdmin(VisitModelAdminMixin, ModelAdminMixin, admin.ModelAdmin):
     list_filter = (
         'report_datetime',
         'reason',
-        'household_member__household_structure__household__plot__map_area',
+        'clinic_household_member__household_structure__household__plot__map_area',
         'appointment__appt_status',
         'appointment__visit_code',
     )

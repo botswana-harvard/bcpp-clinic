@@ -15,8 +15,9 @@ from edc_constants.choices import YES_NO
 from edc_identifier.model_mixins import NonUniqueSubjectIdentifierModelMixin
 from edc_registration.model_mixins.updates_or_creates_registered_subject_model_mixin import UpdatesOrCreatesRegistrationModelMixin
 from edc_search.model_mixins import SearchSlugModelMixin
-from member.models.household_member.household_member import HouseholdMember
 from survey.model_mixins import SurveyScheduleModelMixin
+
+from .clinic_household_member import ClinicHouseholdMember
 
 
 class ClinicConsent(ConsentModelMixin, UpdatesOrCreatesRegistrationModelMixin,
@@ -29,8 +30,8 @@ class ClinicConsent(ConsentModelMixin, UpdatesOrCreatesRegistrationModelMixin,
     """ A model completed by the user that captures the ICF.
     """
 
-    household_member = models.ForeignKey(
-        HouseholdMember, on_delete=models.PROTECT)
+    clinic_household_member = models.ForeignKey(
+        ClinicHouseholdMember, on_delete=models.PROTECT)
 
     is_minor = models.CharField(
         verbose_name=("Is subject a minor?"),

@@ -6,6 +6,7 @@ from edc_constants.constants import NO, YES
 from ..exceptions import CLinicEligibilityValidationError
 from .clinic_eligibility import ClinicEligibility
 from .clinic_enrollment_loss import ClinicEnrollmentLoss
+from .clinic_consent import ClinicConsent
 
 
 @receiver(post_save, weak=False, dispatch_uid="clinic_eligibility_on_post_save")
@@ -17,22 +18,22 @@ def clinic_eligibility_on_post_save(
         if not instance.is_eligible:
             try:
                 enrollment_loss = ClinicEnrollmentLoss.objects.get(
-                    household_member=instance.clinic_household_member)
+                    clinic_household_member=instance.clinic_household_member)
                 enrollment_loss.report_datetime = instance.report_datetime
                 enrollment_loss.reason = instance.loss_reason
                 enrollment_loss.save()
             except ClinicEnrollmentLoss.DoesNotExist:
                 enrollment_loss = ClinicEnrollmentLoss(
-                    household_member=instance.clinic_household_member,
+                    clinic_household_member=instance.clinic_household_member,
                     report_datetime=instance.report_datetime,
                     reason=instance.loss_reason)
                 enrollment_loss.save()
             instance.clinic_household_member.eligible_subject = False
         else:
             enrollment_loss = ClinicEnrollmentLoss.objects.filter(
-                household_member=instance.clinic_household_member).delete()
+                clinic_household_member=instance.clinic_household_member).delete()
             instance.clinic_household_member.eligible_subject = True
-        instance.household_member.enrollment_checklist_completed = True
+        instance.clinic_household_member.enrollment_checklist_completed = True
 
         if created:
             instance.clinic_household_member.visit_attempts += 1
@@ -62,3 +63,17 @@ def clinic_consent_on_post_save(
             clinic_eligibility.consent_datetime = instance.consent_datetime
             clinic_eligibility.save(
                 update_fields=['is_consented', 'consent_datetime'])
+
+
+@receiver(post_save, weak=False, dispatch_uid='consent_on_post_save')
+def consent_on_post_save(sender, instance, raw, created, using, **kwargs):
+    if not raw:
+        if issubclass(sender, (ClinicConsent)):
+            # update clinic household member field attrs
+            instance.clinic_household_member.absent = False
+            instance.clinic_household_member.undecided = False
+            instance.clinic_household_member.refused = False
+            instance.clinic_household_member.subject_identifier = instance.subject_identifier
+            instance.clinic_household_member.save()
+            instance.clinic_household_member.household_structure.enrolled = True
+            instance.clinic_household_member.household_structure.save()

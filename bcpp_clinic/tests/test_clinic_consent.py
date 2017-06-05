@@ -3,13 +3,10 @@ from model_mommy import mommy
 from django.test import TestCase
 
 from edc_base.utils import get_utcnow
-from edc_constants.constants import CONSENTED, MALE
+from edc_constants.constants import MALE
 
 from ..utils import get_clinic_member
-from ..models import ClinicConsent
-from bcpp_clinic.constants import ELIGIBLE
-from member.participation_status import ParticipationStatus
-from bcpp_clinic.models.clinic_household_member import ClinicHouseholdMember
+from ..models import ClinicConsent, ClinicHouseholdMember
 
 
 class TestClinicConsent(TestCase):
@@ -29,7 +26,10 @@ class TestClinicConsent(TestCase):
         mommy.make_recipe(
             'bcpp_clinic.cliniceligibility',
             clinic_household_member=clinic_household_member)
-        mommy.make_recipe(
+        clinic_consent = mommy.make_recipe(
             'bcpp_clinic.clinicconsent',
-            household_member=clinic_household_member)
+            clinic_household_member=clinic_household_member)
+        clinic_household_memnber = ClinicHouseholdMember.objects.get(
+            id=clinic_consent.clinic_household_memnber.id)
+        self.assertTrue(clinic_household_memnber.household_structure.enrolled)
         self.assertEqual(ClinicConsent.objects.all().count(), 1)
