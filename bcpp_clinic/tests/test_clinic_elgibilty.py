@@ -20,6 +20,15 @@ class TestClinicEligibility(unittest.TestCase):
         age_evaluator = AgeEvaluator(age=99)
         self.assertFalse(age_evaluator.eligible)
 
+    @tag('invalid_age_in_years1')
+    def test_eligibility_invalid_age_in_years1(self):
+
+        self.assertRaises(TypeError, AgeEvaluator)
+        age_evaluator = AgeEvaluator(age=18)
+        self.assertTrue(age_evaluator.eligible)
+        age_evaluator = AgeEvaluator(age=99)
+        self.assertFalse(age_evaluator.eligible)
+
     def test_eligibility_invalid_age_in_years_reasons(self):
         age_evaluator = AgeEvaluator(age=15)
         self.assertIn('age<16', age_evaluator.reason)
