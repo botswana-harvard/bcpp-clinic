@@ -18,6 +18,8 @@ class AppConfig(DjangoApponfig):
     listboard_url_name = 'bcpp_clinic:listboard_url'
     dashboard_url_name = 'bcpp_clinic:dashboard_url'
     admin_site_name = 'bcpp_clinic_admin'
+    eligibility_age_adult_lower = 16
+    eligibility_age_adult_upper = 64
 
 
 class EdcIdentifierAppConfig(BaseEdcIdentifierAppConfig):

@@ -36,7 +36,6 @@ DEBUG = True
 CONFIG_FILE = '{}.conf'.format(APP_NAME)
 if DEBUG:
     ETC_DIR = str(PurePath(BASE_DIR).joinpath('etc'))
-    ETC_DIR = '/etc'
 else:
     ETC_DIR = '/etc'
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
@@ -171,7 +170,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-ETC_DIR = '/etc'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
