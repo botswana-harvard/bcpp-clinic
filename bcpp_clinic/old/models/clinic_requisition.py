@@ -15,7 +15,7 @@ from edc_visit_tracking.model_mixins import (
 from edc_map.site_mappers import site_mappers
 from edc_consent.model_mixins import RequiresConsentMixin
 
-from .clinic_visit import ClinicVisit
+from ..models import ClinicVisit
 
 
 class Manager(VisitTrackingCrfModelManager, SearchSlugManager):

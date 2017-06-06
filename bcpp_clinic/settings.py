@@ -22,7 +22,7 @@ BASE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
 
 style = color_style()
 
-APP_NAME = 'bcpp'
+APP_NAME = 'bcpp_clinic'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -57,7 +57,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tz_detect',
-    'edc_offstudy',
     'rest_framework',
     'rest_framework.authtoken',
     'django_crypto_fields.apps.AppConfig',
@@ -65,30 +64,9 @@ INSTALLED_APPS = [
     'edc_dashboard.apps.AppConfig',
     'edc_registration.apps.AppConfig',
     'edc_visit_schedule.apps.AppConfig',
-    'bcpp.apps.AppConfig',
-    'bcpp.apps.EdcBaseAppConfig',
-    'bcpp.apps.EdcLabAppConfig',
-    'bcpp.apps.EdcLabelAppConfig',
-    'bcpp_clinic.apps.EdcMetadataAppConfig',
-    'bcpp.apps.EdcIdentifierAppConfig',
-    'bcpp.apps.EdcProtocolAppConfig',
-    'bcpp.apps.SurveyAppConfig',
-    'bcpp.apps.EdcMapAppConfig',
-    'bcpp.apps.EdcConsentAppConfig',
-    'bcpp.apps.EdcDeviceAppConfig',
-    'bcpp.apps.EdcBaseTestAppConfig',
-    'bcpp.apps.EdcTimepointAppConfig',
-    'edc_appointment.apps.AppConfig',
-    'bcpp_clinic.apps.EdcVisitTrackingAppConfig',
-    'bcpp.apps.HouseholdAppConfig',
-    'bcpp.apps.MemberAppConfig',
-    'bcpp.apps.EnumerationAppConfig',
-    'bcpp.apps.BcppSubjectAppConfig',
-    'bcpp.apps.BcppFollowAppConfig',
-    'bcpp.apps.PlotAppConfig',
-    'bcpp.apps.EdcSyncAppConfig',
-    'bcpp.apps.EdcSyncFilesAppConfig',
-    'bcpp_report.apps.AppConfig',
+    'bcpp_clinic.apps.EdcIdentifierAppConfig',
+    'bcpp_clinic.apps.EdcDeviceAppConfig',
+    'bcpp_clinic.apps.EdcProtocolAppConfig',
     'bcpp_clinic.apps.AppConfig',
 ]
 
@@ -221,4 +199,5 @@ LABEL_PRINTER = config['edc_label'].get('label_printer', 'label_printer')
 SURVEY_GROUP_NAME = config['survey'].get('group_name')
 SURVEY_SCHEDULE_NAME = config['survey'].get('schedule_name')
 ANONYMOUS_ENABLED = config['bcpp'].get('anonymous_enabled')
-DEVICE_IDS = [d.strip() for d in config['edc_map'].get('device_ids').split(',')]
+DEVICE_IDS = [d.strip()
+              for d in config['edc_map'].get('device_ids').split(',')]

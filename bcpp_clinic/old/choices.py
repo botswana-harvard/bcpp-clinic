@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 from edc_constants.constants import NOT_APPLICABLE, POS, NEG, IND, UNK, OTHER
 
-from .constants import BLOCK_PARTICIPATION, CONTINUE_PARTICIPATION, ABLE_TO_PARTICIPATE, MENTAL_INCAPACITY
+from .constants import BLOCK_PARTICIPATION, CONTINUE_PARTICIPATION
 
 BLOCK_CONTINUE = (
     (BLOCK_PARTICIPATION, 'Yes (Do not allow further participation)'),
@@ -29,14 +29,4 @@ VISIT_UNSCHEDULED_REASON = (
     ('Ill oncology', _('Ill oncology clinic visit')),
     ('Patient called', _('Patient called to come for visit')),
     (OTHER, _('Other, specify:')),
-)
-
-INABILITY_TO_PARTICIPATE_REASON = (
-    (ABLE_TO_PARTICIPATE, ('ABLE to participate')),
-    (MENTAL_INCAPACITY, ('Mental Incapacity')),
-    ('Deaf/Mute', ('Deaf/Mute')),
-    ('Too sick', ('Too sick')),
-    ('Incarcerated', ('Incarcerated')),
-    (OTHER, ('Other, specify.')),
-    (NOT_APPLICABLE, ('Not applicable')),
 )

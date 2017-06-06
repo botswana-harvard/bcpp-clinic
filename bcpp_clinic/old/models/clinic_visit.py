@@ -10,9 +10,11 @@ from survey.model_mixins import SurveyModelMixin
 from ..choices import VISIT_UNSCHEDULED_REASON
 from edc_offstudy.model_mixins import OffstudyMixin
 
+from ..models import ClinicHouseholdMember
+
 
 class ClinicVisit(VisitModelMixin, OffstudyMixin, CreatesMetadataModelMixin,
-                  RequiresConsentMixin, BaseUuidModel):
+                  SurveyModelMixin, RequiresConsentMixin, BaseUuidModel):
 
     """A model completed by the user that captures the covering
     information for the data collected for this timepoint/appointment,
@@ -20,6 +22,9 @@ class ClinicVisit(VisitModelMixin, OffstudyMixin, CreatesMetadataModelMixin,
     """
 
     appointment = models.OneToOneField(Appointment, on_delete=models.PROTECT)
+
+    clinic_household_member = models.ForeignKey(
+        ClinicHouseholdMember, on_delete=models.PROTECT)
 
     reason_unscheduled = models.CharField(
         verbose_name=(

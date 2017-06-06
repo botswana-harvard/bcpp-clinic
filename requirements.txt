@@ -1,0 +1,12 @@
+git+https://github.com/botswana-harvard/edc-base.git
+git+https://github.com/botswana-harvard/edc-sync.git
+git+https://github.com/botswana-harvard/edc-sync-files.git
+git+https://github.com/erikvw/django-revision.git
+git+https://github.com/erikvw/django-crypto-fields.git
+git+https://github.com/botswana-harvard/edc-dashboard.git
+git+https://github.com/botswana-harvard/edc-registration.git
+git+https://github.com/botswana-harvard/edc-visit-schedule.git
+git+https://github.com/botswana-harvard/edc-constants.git
+git+https://github.com/botswana-harvard/edc-identifier.git
+git+https://github.com/botswana-harvard/edc-protocol.git
+git+https://github.com/botswana-harvard/edc-device.git

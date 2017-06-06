@@ -12,12 +12,25 @@ from edc_offstudy.model_mixins import OffstudyMixin
 
 from edc_protocol.validators import datetime_not_before_study_start
 
+from edc_visit_tracking.managers import CrfModelManager as VisitTrackingCrfModelManager
 from edc_visit_tracking.model_mixins import (
     CrfModelMixin as VisitTrackingCrfModelMixin, PreviousVisitModelMixin)
 
 from edc_consent.model_mixins import RequiresConsentMixin as BaseRequiresConsentMixin
 
 from .clinic_visit import ClinicVisit
+
+
+class CrfModelManager(VisitTrackingCrfModelManager):
+
+    def get_by_natural_key(self, subject_identifier, visit_schedule_name,
+                           schedule_name, visit_code):
+        return self.get(
+            clinic_visit__subject_identifier=subject_identifier,
+            clinic_visit__visit_schedule_name=visit_schedule_name,
+            clinic_visit__schedule_name=schedule_name,
+            clinic_visit__visit_code=visit_code
+        )
 
 
 class CrfModelMixin(VisitTrackingCrfModelMixin, OffstudyMixin,
@@ -39,6 +52,10 @@ class CrfModelMixin(VisitTrackingCrfModelMixin, OffstudyMixin,
                    'the date/time this information was reported.'))
 
     history = HistoricalRecords()
+
+    def natural_key(self):
+        return self.clinic_visit.natural_key()
+    natural_key.dependencies = ['bcpp_clinic.clinicvisit']
 
     class Meta(VisitTrackingCrfModelMixin.Meta, BaseRequiresConsentMixin.Meta):
         consent_model = 'bcpp_clinic.clinicconsent'

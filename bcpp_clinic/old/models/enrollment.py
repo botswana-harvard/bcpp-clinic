@@ -1,15 +1,23 @@
 from django.db import models
 from django.utils import timezone
 
+
+from django.db.models.deletion import ProtectedError
+from member.models.household_member import HouseholdMember
 from edc_visit_schedule.model_mixins import EnrollmentModelMixin
+from survey.model_mixins import SurveyModelMixin
 from edc_base.model_mixins.base_uuid_model import BaseUuidModel
 from edc_appointment.model_mixins import CreateAppointmentsMixin
 
+from ..exceptions import EnrollmentError
+from ..managers import EnrollmentManager as BaseEnrollmentManager
 
-class Enrollment(EnrollmentModelMixin, CreateAppointmentsMixin, BaseUuidModel):
+
+class EnrollmentCLinic(EnrollmentModelMixin, SurveyModelMixin,
+                       CreateAppointmentsMixin, BaseUuidModel):
 
     """A model used by the system. Auto-completed by the
-    Clinic Consents.
+    Subject and Anonymous Consents.
     """
 
     ADMIN_SITE_NAME = 'bcpp_clinic_admin'
@@ -17,6 +25,10 @@ class Enrollment(EnrollmentModelMixin, CreateAppointmentsMixin, BaseUuidModel):
     subject_identifier = models.CharField(
         verbose_name="Subject Identifier",
         max_length=50)
+
+    household_member = models.ForeignKey(
+        HouseholdMember,
+        on_delete=models.PROTECT)
 
     consent_identifier = models.UUIDField()
 
