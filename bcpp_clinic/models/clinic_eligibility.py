@@ -200,6 +200,10 @@ class ClinicEligibility (EligibilityIdentifierModelMixin, IdentityFieldsMixin, B
         return "{} ({}) {}/{}".format(
             self.first_name, self.initials, self.gender, self.age_in_years)
 
+    @property
+    def test_property(self):
+        return "This thing works cool"
+
     class Meta:
         app_label = "bcpp_clinic"
         verbose_name = "Clinic Eligibility"

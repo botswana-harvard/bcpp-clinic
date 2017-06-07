@@ -61,11 +61,19 @@ INSTALLED_APPS = [
     'django_crypto_fields.apps.AppConfig',
     'django_revision.apps.AppConfig',
     'edc_dashboard.apps.AppConfig',
+    'edc_map.apps.AppConfig',
+    'edc_consent.apps.AppConfig',
+    'bcpp_clinic.apps.EdcBaseAppConfig',
     'edc_registration.apps.AppConfig',
     'edc_visit_schedule.apps.AppConfig',
     'bcpp_clinic.apps.EdcIdentifierAppConfig',
     'bcpp_clinic.apps.EdcDeviceAppConfig',
     'bcpp_clinic.apps.EdcProtocolAppConfig',
+    'bcpp_clinic.apps.EdcLabAppConfig',
+    'bcpp_clinic.apps.EdcMetadataAppConfig',
+    'bcpp_clinic.apps.EdcVisitTrackingAppConfig',
+    'bcpp_clinic.apps.EdcTimepointAppConfig',
+    'bcpp_clinic.apps.EdcAppointmentAppConfig',
     'bcpp_clinic.apps.AppConfig',
 ]
 
@@ -183,19 +191,7 @@ GIT_DIR = BASE_DIR.ancestor(1)
 
 KEY_PATH = '/Volumes/crypto_keys'
 
-CONFIG_FILE = '{}.conf'.format(APP_NAME)
-
-CONFIG_PATH = os.path.join(ETC_DIR, APP_NAME, CONFIG_FILE)
-
-config = configparser.RawConfigParser()
-config.read(os.path.join(CONFIG_PATH))
-
 CURRENT_MAP_AREA = 'test_community'
-DEVICE_ID = config['edc_device'].get('device_id', '99')
-DEVICE_ROLE = config['edc_device'].get('role')
-LABEL_PRINTER = config['edc_label'].get('label_printer', 'label_printer')
-SURVEY_GROUP_NAME = config['survey'].get('group_name')
-SURVEY_SCHEDULE_NAME = config['survey'].get('schedule_name')
-ANONYMOUS_ENABLED = config['bcpp'].get('anonymous_enabled')
-DEVICE_IDS = [d.strip()
-              for d in config['edc_map'].get('device_ids').split(',')]
+DEVICE_ID = '21'
+DEVICE_ROLE = 'Client'
+LABEL_PRINTER = 'label_printer'
