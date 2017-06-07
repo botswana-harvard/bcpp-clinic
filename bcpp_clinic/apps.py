@@ -71,7 +71,7 @@ class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
 
 class EdcLabAppConfig(BaseEdcLabAppConfig):
     base_template_name = 'bcpp/base.html'
-    requisition_model = 'bcpp_subject.subjectrequisition'
+    requisition_model = 'bcpp_clinic.subjectrequisition'
     result_model = 'edc_lab.result'
 
     @property
@@ -118,7 +118,7 @@ class EdcAppointmentAppConfig(BaseEdcAppointmentAppConfig):
 
 
 class EdcBaseAppConfig(BaseEdcBaseAppConfig):
-    project_name = 'Ambition'
+    project_name = 'Bcpp Clinic'
     institution = 'Botswana-Harvard AIDS Institute'
     copyright = '2017-{}'.format(get_utcnow().year)
     license = None
