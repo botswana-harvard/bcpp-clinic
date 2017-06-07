@@ -1,6 +1,4 @@
 from .clinic_consent import ClinicConsent
-from .clinic_eligibility import ClinicEligibility
-from .clinic_enrollment_loss import ClinicEnrollmentLoss
 from .clinic_off_study import ClinicOffStudy
 from .clinic_requisition import ClinicRequisition
 from .clinic_subject_locator import ClinicSubjectLocator

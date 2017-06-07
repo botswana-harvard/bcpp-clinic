@@ -16,7 +16,7 @@ from edc_identifier.model_mixins import NonUniqueSubjectIdentifierModelMixin
 from edc_registration.model_mixins import UpdatesOrCreatesRegistrationModelMixin
 from edc_search.model_mixins import SearchSlugModelMixin
 
-from .clinic_eligibility import ClinicEligibility
+from clinic_screening.models import ClinicEligibility
 
 
 class ClinicConsent(ConsentModelMixin, UpdatesOrCreatesRegistrationModelMixin,

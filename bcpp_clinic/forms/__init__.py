@@ -1,6 +1,4 @@
 from .clinic_consent_form import ClinicConsentForm
-from .clinic_eligibility_form import ClinicEligibilityForm
-from .clinic_enrollment_loss_form import ClinicEnrollmentLossForm
 from .clinic_subject_locator_form import ClinicSubjectLocatorForm
 from .clinic_visit_form import ClinicVisitForm
 from .clinic_vl_result_form import ClinicVlResultForm
