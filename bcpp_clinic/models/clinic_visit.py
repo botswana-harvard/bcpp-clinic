@@ -5,7 +5,6 @@ from edc_base.model_mixins.base_uuid_model import BaseUuidModel
 from edc_consent.model_mixins import RequiresConsentMixin
 from edc_metadata.model_mixins.creates.creates_metadata_model_mixin import CreatesMetadataModelMixin
 from edc_visit_tracking.model_mixins.visit_model_mixin import VisitModelMixin
-from survey.model_mixins import SurveyModelMixin
 
 from ..choices import VISIT_UNSCHEDULED_REASON
 from edc_offstudy.model_mixins import OffstudyMixin

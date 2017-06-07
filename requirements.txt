@@ -10,3 +10,13 @@ git+https://github.com/botswana-harvard/edc-constants.git
 git+https://github.com/botswana-harvard/edc-identifier.git
 git+https://github.com/botswana-harvard/edc-protocol.git
 git+https://github.com/botswana-harvard/edc-device.git
+git+https://github.com/botswana-harvard/edc-consent.git
+git+https://github.com/botswana-harvard/edc-search.git
+git+https://github.com/botswana-harvard/edc-offstudy.git
+git+https://github.com/botswana-harvard/edc-lab.git
+git+https://github.com/botswana-harvard/edc-metadata.git
+git+https://github.com/botswana-harvard/edc-visit-tracking.git
+git+https://github.com/botswana-harvard/edc-appointment.git
+git+https://github.com/botswana-harvard/edc-map.git
+git+https://github.com/botswana-harvard/edc-timepoint.git
+git+https://github.com/botswana-harvard/edc-locator.git

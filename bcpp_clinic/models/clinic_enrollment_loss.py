@@ -35,4 +35,3 @@ class ClinicEnrollmentLoss(BaseUuidModel):
         app_label = 'bcpp_clinic'
         verbose_name = "Clinic Enrollment Loss"
         verbose_name_plural = "Clinic Enrollment Loss"
-        proxy = True
