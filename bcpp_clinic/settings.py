@@ -64,8 +64,8 @@ INSTALLED_APPS = [
     'bcpp_clinic.apps.EdcAppointmentAppConfig',
     'bcpp_clinic.apps.EdcSyncAppConfig',
     'bcpp_clinic.apps.EdcSyncFilesAppConfig',
-    'clinic_subject.apps.AppConfig',
-    'clinic_screening.apps.AppConfig',
+    'bcpp-clinic_subject.apps.AppConfig',
+    'bcpp-clinic_screening.apps.AppConfig',
     'bcpp_clinic.apps.AppConfig',
 ]
 
