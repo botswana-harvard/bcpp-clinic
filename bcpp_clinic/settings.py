@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'bcpp_clinic_screening.apps.AppConfig',
     'bcpp_clinic.apps.AppConfig',
 ]
-
+clinic_subject
 
 if 'test' in sys.argv:
     MIGRATION_MODULES = {

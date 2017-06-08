@@ -9,16 +9,16 @@ from edc_registration.admin_site import edc_registration_admin
 from edc_sync.admin import edc_sync_admin
 from edc_identifier.admin_site import edc_identifier_admin
 
-from clinic_subject.admin_site import clinic_subject_admin
-from clinic_screening.admin_site import clinic_screening_admin
+from bcpp_clinic_subject.admin_site import bcpp_clinic_subject_admin
+from bcpp_clinic_screening.admin_site import bcpp_clinic_screening_admin
 
 from .views import HomeView, AdministrationView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^admin/', edc_appointment_admin.urls),
-    url(r'^admin/', clinic_subject_admin.urls),
-    url(r'^admin', clinic_screening_admin.urls),
+    url(r'^admin/', bcpp_clinic_subject_admin.urls),
+    url(r'^admin', bcpp_clinic_screening_admin.urls),
     url(r'^admin/', edc_lab_admin.urls),
     url(r'^admin/', edc_identifier_admin.urls),
     url(r'^admin/', edc_metadata_admin.urls),
@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^admininistration/', AdministrationView.as_view(),
         name='administration_url'),
     url('subject/',
-        include('clinic_subject.urls', namespace='clinic_subject')),
+        include('bcpp_clinic_subject.urls', namespace='bcpp_clinic_subject')),
     url('clinic_screening/',
         include('clinic_screening.urls', namespace='clinic_screening')),
     url(r'^appointment/',

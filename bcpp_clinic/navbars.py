@@ -3,8 +3,9 @@ from edc_base.navbar_item import NavbarItem
 navbars = {}
 navbar_items = []
 config = [
-    ('clinic_subject', 'subjects', 'fa-user-circle-o', 'listboard_url_name'),
-    ('clinic_screening', 'Screening',
+    ('bcpp_clinic_subject', 'subjects',
+     'fa-user-circle-o', 'listboard_url_name'),
+    ('bcpp_clinic_screening', 'Screening',
      'fa-user-circle-o', 'listboard_url_name'),
     ('edc_lab', None, 'fa-flask', 'home_url_name')
 ]
