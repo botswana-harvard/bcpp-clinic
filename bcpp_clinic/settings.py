@@ -9,13 +9,11 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
-import configparser
 import os
 from unipath import Path
 import sys
 
 from django.core.management.color import color_style
-from pathlib import PurePath
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
@@ -30,21 +28,12 @@ APP_NAME = 'bcpp_clinic'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '*3izpxc9!j7)(a*2+_sw%_10gx*_$z1-%bf2mz%!pkd%@*%$1)'
 
+KEY_PATH = '/Volumes/crypto_keys'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-CONFIG_FILE = '{}.conf'.format(APP_NAME)
-if DEBUG:
-    ETC_DIR = str(PurePath(BASE_DIR).joinpath('etc'))
-else:
-    ETC_DIR = '/etc'
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-
-CONFIG_PATH = os.path.join(ETC_DIR, APP_NAME, CONFIG_FILE)
-sys.stdout.write(style.SUCCESS('Reading config from {}\n'.format(CONFIG_PATH)))
-
-config = configparser.RawConfigParser()
-config.read(os.path.join(CONFIG_PATH))
 
 # Application definition
 
@@ -61,7 +50,6 @@ INSTALLED_APPS = [
     'django_crypto_fields.apps.AppConfig',
     'django_revision.apps.AppConfig',
     'edc_dashboard.apps.AppConfig',
-    'edc_map.apps.AppConfig',
     'edc_consent.apps.AppConfig',
     'bcpp_clinic.apps.EdcBaseAppConfig',
     'edc_registration.apps.AppConfig',
@@ -74,6 +62,10 @@ INSTALLED_APPS = [
     'bcpp_clinic.apps.EdcVisitTrackingAppConfig',
     'bcpp_clinic.apps.EdcTimepointAppConfig',
     'bcpp_clinic.apps.EdcAppointmentAppConfig',
+    'bcpp_clinic.apps.EdcSyncAppConfig',
+    'bcpp_clinic.apps.EdcSyncFilesAppConfig',
+    'clinic_subject.apps.AppConfig',
+    'clinic_screening.apps.AppConfig',
     'bcpp_clinic.apps.AppConfig',
 ]
 
@@ -81,23 +73,14 @@ INSTALLED_APPS = [
 if 'test' in sys.argv:
     MIGRATION_MODULES = {
         "django_crypto_fields": None,
-        "edc_call_manager": None,
         "edc_appointment": None,
         "edc_call_manager": None,
         "edc_consent": None,
         "edc_death_report": None,
-        "edc_export": None,
         "edc_identifier": None,
         "edc_metadata": None,
         "edc_registration": None,
         "edc_sync": None,
-        'edc_map': None,
-        "bcpp": None,
-        "bcpp_subject": None,
-        "plot": None,
-        "household": None,
-        "member": None,
-        "survey": None,
         'admin': None,
         "auth": None,
         "edc_sync_files": None,
@@ -189,9 +172,6 @@ MEDIA_URL = '/media/'
 
 GIT_DIR = BASE_DIR.ancestor(1)
 
-KEY_PATH = '/Volumes/crypto_keys'
-
-CURRENT_MAP_AREA = 'test_community'
 DEVICE_ID = '21'
 DEVICE_ROLE = 'Client'
 LABEL_PRINTER = 'label_printer'
