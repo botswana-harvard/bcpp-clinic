@@ -1,3 +1,5 @@
+import os
+
 from django.apps import AppConfig as DjangoApponfig
 from django.conf import settings
 
@@ -13,6 +15,7 @@ from edc_constants.constants import FAILED_ELIGIBILITY
 from edc_device.apps import AppConfig as BaseEdcDeviceAppConfig
 from edc_identifier.apps import AppConfig as BaseEdcIdentifierAppConfig
 from edc_lab.apps import AppConfig as BaseEdcLabAppConfig
+from edc_label.apps import AppConfig as BaseEdcLabelAppConfig
 from edc_metadata.apps import AppConfig as BaseEdcMetadataAppConfig
 from edc_protocol.apps import AppConfig as BaseEdcProtocolAppConfig, SubjectType, Cap
 from edc_timepoint.apps import AppConfig as BaseEdcTimepointAppConfig
@@ -52,7 +55,7 @@ class EdcDeviceAppConfig(BaseEdcDeviceAppConfig):
 class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
     protocol = 'BHP066'
     protocol_number = '066'
-    protocol_name = 'BCPP'
+    protocol_name = 'BCPP Clinic'
     protocol_title = 'Botswana Combination Prevention Project'
     subject_types = [
         SubjectType('clinic', 'Research Subject',
@@ -113,7 +116,7 @@ class EdcTimepointAppConfig(BaseEdcTimepointAppConfig):
 
 
 class EdcAppointmentAppConfig(BaseEdcAppointmentAppConfig):
-    app_label = 'bcpp_clinic'
+    app_label = 'bcpp_clinic_subject'
     default_appt_type = 'home'
     facilities = {
         'home': Facility(name='home', days=[MO, TU, WE, TH, FR, SA, SU],
@@ -123,7 +126,7 @@ class EdcAppointmentAppConfig(BaseEdcAppointmentAppConfig):
 class EdcBaseAppConfig(BaseEdcBaseAppConfig):
     project_name = 'Bcpp Clinic'
     institution = 'Botswana-Harvard AIDS Institute'
-    copyright = '2017-{}'.format(get_utcnow().year)
+    copyright = '2013-{}'.format(get_utcnow().year)
     license = None
 
     def get_navbars(self):
@@ -138,3 +141,8 @@ class EdcSyncAppConfig(BaseEdcSyncAppConfig):
 class EdcSyncFilesAppConfig(BaseEdcSyncFilesAppConfig):
     edc_sync_files_using = True
     role = CENTRAL_SERVER
+
+
+class EdcLabelAppConfig(BaseEdcLabelAppConfig):
+    template_folder = os.path.join(
+        settings.STATIC_ROOT, 'bcpp_clinic', 'label_templates')

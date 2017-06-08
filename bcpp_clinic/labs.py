@@ -1,7 +1,7 @@
 from edc_lab import AliquotType, LabProfile, ProcessingProfile, RequisitionPanel, Process
 from edc_lab.site_labs import site_labs
 
-from .constants import RESEARCH_BLOOD_DRAW, VIRAL_LOAD
+from .constants import VIRAL_LOAD, RESEARCH_BLOOD_DRAW
 
 
 lab_profile = LabProfile('bcpp_clinic_subject')
