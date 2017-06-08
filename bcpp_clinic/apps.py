@@ -16,6 +16,9 @@ from edc_lab.apps import AppConfig as BaseEdcLabAppConfig
 from edc_metadata.apps import AppConfig as BaseEdcMetadataAppConfig
 from edc_protocol.apps import AppConfig as BaseEdcProtocolAppConfig, SubjectType, Cap
 from edc_timepoint.apps import AppConfig as BaseEdcTimepointAppConfig
+from edc_device.constants import CENTRAL_SERVER
+from edc_sync.apps import AppConfig as BaseEdcSyncAppConfig
+from edc_sync_files.apps import AppConfig as BaseEdcSyncFilesAppConfig
 from edc_timepoint.timepoint import Timepoint
 from edc_visit_tracking.apps import AppConfig as BaseEdcVisitTrackingAppConfig
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED, LOST_VISIT
@@ -53,7 +56,7 @@ class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
     protocol_title = 'Botswana Combination Prevention Project'
     subject_types = [
         SubjectType('clinic', 'Research Subject',
-                    Cap(model_name='bcpp_clinic.clinicconsent', max_subjects=9999)),
+                    Cap(model_name='clinic_subject.subjectconsent', max_subjects=9999)),
     ]
     study_open_datetime = datetime(2013, 10, 18, 0, 0, 0, tzinfo=gettz('UTC'))
     study_close_datetime = datetime(2018, 12, 1, 0, 0, 0, tzinfo=gettz('UTC'))
@@ -71,7 +74,7 @@ class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
 
 class EdcLabAppConfig(BaseEdcLabAppConfig):
     base_template_name = 'bcpp/base.html'
-    requisition_model = 'bcpp_clinic.subjectrequisition'
+    requisition_model = 'clinic_subject.subjectrequisition'
     result_model = 'edc_lab.result'
 
     @property
@@ -81,7 +84,7 @@ class EdcLabAppConfig(BaseEdcLabAppConfig):
 
 
 class EdcMetadataAppConfig(BaseEdcMetadataAppConfig):
-    reason_field = {'bcpp_clinic.clinicvisit': 'reason'}
+    reason_field = {'clinic_subject.subjectvisit': 'reason'}
     create_on_reasons = [SCHEDULED, UNSCHEDULED]
     delete_on_reasons = [LOST_VISIT, FAILED_ELIGIBILITY]
     metadata_rules_enabled = True  # default
@@ -89,19 +92,19 @@ class EdcMetadataAppConfig(BaseEdcMetadataAppConfig):
 
 class EdcVisitTrackingAppConfig(BaseEdcVisitTrackingAppConfig):
     visit_models = {
-        'bcpp_clinic': ('clinic_visit', 'bcpp_clinic.clinicvisit')}
+        'clinic_subject': ('subject_visit', 'clinic_subject.subjectvisit')}
 
 
 class EdcTimepointAppConfig(BaseEdcTimepointAppConfig):
     timepoints = [
         Timepoint(
-            model='bcpp_clinic.appointment',
+            model='clinic_subject.appointment',
             datetime_field='appt_datetime',
             status_field='appt_status',
             closed_status='DONE'
         ),
         Timepoint(
-            model='bcpp_clinic.historicalappointment',
+            model='clinic_subject.historicalappointment',
             datetime_field='appt_datetime',
             status_field='appt_status',
             closed_status='DONE'
@@ -125,3 +128,13 @@ class EdcBaseAppConfig(BaseEdcBaseAppConfig):
 
     def get_navbars(self):
         return navbars
+
+
+class EdcSyncAppConfig(BaseEdcSyncAppConfig):
+    edc_sync_files_using = True
+    role = CENTRAL_SERVER
+
+
+class EdcSyncFilesAppConfig(BaseEdcSyncFilesAppConfig):
+    edc_sync_files_using = True
+    role = CENTRAL_SERVER

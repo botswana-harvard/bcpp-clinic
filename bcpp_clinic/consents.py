@@ -15,7 +15,7 @@ app_config = django_apps.get_app_config('edc_protocol')
 tzinfo = gettz('Africa/Gaborone')
 
 clinic_v1 = Consent(
-    'bcpp_clinic.clinicconsent',
+    'clinic_subject.subjectconsent',
     group='clinic',
     start=arrow.get(
         datetime(2013, 10, 18, 0, 0, 0), tzinfo=tzinfo).to('UTC').datetime,
