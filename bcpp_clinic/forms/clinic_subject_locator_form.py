@@ -1,10 +1,10 @@
 from django import forms
 
 from ..models import ClinicSubjectLocator
-from .model_form_mixin import CLinicModelFormMixin
+from .modelform_mixin import ClinicModelFormMixin
 
 
-class ClinicSubjectLocatorForm (CLinicModelFormMixin):
+class ClinicSubjectLocatorForm (ClinicModelFormMixin):
 
     def validate_home_visit_permission(self):
         cleaned_data = self.cleaned_data
@@ -30,7 +30,7 @@ class ClinicSubjectLocatorForm (CLinicModelFormMixin):
                 'If participant has allowed you to call them at work, give the work phone number?')
 
     def clean(self):
-        cleaned_data = super(ClinicSubjectLocatorForm, self).clean()
+        cleaned_data = super().clean()
 
         self.validate_home_visit_permission()
         # permission to followup

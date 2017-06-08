@@ -1,10 +1,10 @@
 from edc_visit_tracking.form_mixins import VisitFormMixin
 
 from ..models import ClinicVisit
-from .model_form_mixin import CLinicModelFormMixin
+from .modelform_mixin import ClinicModelFormMixin
 
 
-class ClinicVisitForm (VisitFormMixin, CLinicModelFormMixin):
+class ClinicVisitForm (VisitFormMixin, ClinicModelFormMixin):
 
     class Meta:
         model = ClinicVisit

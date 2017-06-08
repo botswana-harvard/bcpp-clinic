@@ -1,13 +1,8 @@
 from ..models import DailyLog
-from .model_form_mixin import CLinicModelFormMixin
+from .modelform_mixin import ClinicModelFormMixin
 
 
-class DailyLogForm(CLinicModelFormMixin):
-
-    def clean(self):
-        cleaned_data = super(DailyLogForm, self).clean()
-
-        return cleaned_data
+class DailyLogForm(ClinicModelFormMixin):
 
     class Meta:
         model = DailyLog

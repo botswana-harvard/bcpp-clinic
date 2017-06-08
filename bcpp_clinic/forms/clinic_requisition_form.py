@@ -1,10 +1,10 @@
 from edc_lab.forms import RequisitionFormMixin
 
 from ..models import ClinicRequisition
-from .model_form_mixin import CLinicModelFormMixin
+from .modelform_mixin import ClinicModelFormMixin
 
 
-class ClinicRequisitionForm(RequisitionFormMixin, CLinicModelFormMixin):
+class ClinicRequisitionForm(RequisitionFormMixin, ClinicModelFormMixin):
 
     class Meta:
         model = ClinicRequisition

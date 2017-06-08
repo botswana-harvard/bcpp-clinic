@@ -1,22 +1,22 @@
 from django import forms
 
+from edc_constants.constants import YES
+
 from ..models import ViralLoadTracking
-from .model_form_mixin import CLinicModelFormMixin
+from .modelform_mixin import ClinicModelFormMixin
 
 
-class ViralLoadTrackingForm(CLinicModelFormMixin):
+class ViralLoadTrackingForm(ClinicModelFormMixin):
 
     def clean(self):
-
-        cleaned_data = super(ViralLoadTrackingForm, self).clean()
-
-        if cleaned_data.get('is_drawn', None) == 'Yes' and not cleaned_data.get('clinician_initials', None):
+        cleaned_data = super().clean()
+        if cleaned_data.get('is_drawn') == YES and not cleaned_data.get('clinician_initials'):
             raise forms.ValidationError(
                 'If sample was drawn, please provide the Clinician\'s initials')
 
-        if cleaned_data.get('is_drawn', None) == 'Yes' and not cleaned_data.get('drawn_datetime', None):
+        if cleaned_data.get('is_drawn') == YES and not cleaned_data.get('drawn_datetime'):
             raise forms.ValidationError(
-                'If sample was drawn, please provide the date/ time sample drawn initials')
+                'If sample was drawn, please provide the date/time sample drawn initials')
 
         return cleaned_data
 

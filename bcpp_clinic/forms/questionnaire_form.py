@@ -1,23 +1,24 @@
 from django import forms
 
+from edc_constants.constants import YES
+
 from ..models import Questionnaire
-from .model_form_mixin import CLinicModelFormMixin
+from .modelform_mixin import ClinicModelFormMixin
 
 
-class QuestionnaireForm (CLinicModelFormMixin):
+class QuestionnaireForm (ClinicModelFormMixin):
 
     def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('knows_last_cd4') == YES and not cleaned_data.get('cd4_count'):
+            raise forms.ValidationError(
+                'Participant answered that they know their last '
+                'CD4 value, please provide this value.')
 
-        cleaned_data = super(QuestionnaireForm, self).clean()
-
-        if cleaned_data.get('knows_last_cd4', None) == 'Yes' and not cleaned_data.get('cd4_count', None):
-            raise forms.ValidationError('Participant answered that they know their last '
-                                        'CD4 value, please provide this value.')
-
-        if cleaned_data.get('knows_last_cd4', None) != 'Yes' and cleaned_data.get('cd4_count', None):
-            raise forms.ValidationError('Participant answered \'{0}\' to knowledge of '
-                                        'their CD4 result. Do not provide this value.'.format(
-                                            cleaned_data.get('knows_last_cd4', None)))
+        if cleaned_data.get('knows_last_cd4') != YES and cleaned_data.get('cd4_count'):
+            raise forms.ValidationError(
+                f'Participant answered \'{cleaned_data.get("knows_last_cd4")}\' '
+                'to knowledge of their CD4 result. Do not provide this value.')
 
         return cleaned_data
 
