@@ -10,13 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 import os
-from unipath import Path
 import sys
 
 from django.core.management.color import color_style
+from pathlib import PurePath
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = Path(os.path.dirname(os.path.realpath(__file__)))
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 style = color_style()
 
@@ -44,46 +44,46 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tz_detect',
-    'rest_framework',
-    'rest_framework.authtoken',
     'django_crypto_fields.apps.AppConfig',
     'django_revision.apps.AppConfig',
     'edc_dashboard.apps.AppConfig',
     'edc_consent.apps.AppConfig',
-    'bcpp_clinic.apps.EdcBaseAppConfig',
     'edc_registration.apps.AppConfig',
     'edc_visit_schedule.apps.AppConfig',
-    'bcpp_clinic.apps.EdcIdentifierAppConfig',
+    'bcpp_clinic.apps.EdcAppointmentAppConfig',
+    'bcpp_clinic.apps.EdcBaseAppConfig',
     'bcpp_clinic.apps.EdcDeviceAppConfig',
-    'bcpp_clinic.apps.EdcProtocolAppConfig',
+    'bcpp_clinic.apps.EdcIdentifierAppConfig',
     'bcpp_clinic.apps.EdcLabAppConfig',
     'bcpp_clinic.apps.EdcMetadataAppConfig',
-    'bcpp_clinic.apps.EdcVisitTrackingAppConfig',
-    'bcpp_clinic.apps.EdcTimepointAppConfig',
-    'bcpp_clinic.apps.EdcAppointmentAppConfig',
+    'bcpp_clinic.apps.EdcProtocolAppConfig',
     'bcpp_clinic.apps.EdcSyncAppConfig',
     'bcpp_clinic.apps.EdcSyncFilesAppConfig',
-    'bcpp_clinic_subject.apps.AppConfig',
+    'bcpp_clinic.apps.EdcTimepointAppConfig',
+    'bcpp_clinic.apps.EdcVisitTrackingAppConfig',
     'bcpp_clinic_screening.apps.AppConfig',
+    'bcpp_clinic_subject.apps.AppConfig',
     'bcpp_clinic.apps.AppConfig',
 ]
-clinic_subject
+
 
 if 'test' in sys.argv:
     MIGRATION_MODULES = {
-        "django_crypto_fields": None,
-        "edc_appointment": None,
-        "edc_call_manager": None,
-        "edc_consent": None,
-        "edc_death_report": None,
-        "edc_identifier": None,
-        "edc_metadata": None,
-        "edc_registration": None,
-        "edc_sync": None,
+        'django_crypto_fields': None,
+        'bcpp_clinic_subject': None,
+        'edc_appointment': None,
+        'edc_consent': None,
+        'edc_locator': None,
+        'edc_offstudy': None,
+        'edc_death_report': None,
+        'edc_identifier': None,
+        'edc_lab': None,
+        'edc_metadata': None,
+        'edc_registration': None,
+        'edc_sync': None,
         'admin': None,
-        "auth": None,
-        "edc_sync_files": None,
+        'auth': None,
+        'edc_sync_files': None,
         'sessions': None,
     }
 
@@ -170,7 +170,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, APP_NAME, 'media')
 
 MEDIA_URL = '/media/'
 
-GIT_DIR = BASE_DIR.ancestor(1)
+KEY_PATH = os.path.join(str(PurePath(BASE_DIR).parent), 'crypto_fields')
+GIT_DIR = BASE_DIR
 
 DEVICE_ID = '21'
 DEVICE_ROLE = 'Client'
