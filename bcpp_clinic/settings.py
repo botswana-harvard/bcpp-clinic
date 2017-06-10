@@ -169,6 +169,13 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = (
+    ('tn', 'Setswana'),
+    ('en', 'English'),
+    ('kck', 'Ikalanga'),
+    ('hbs', 'Hambukushu'),
+)
+
 TIME_ZONE = 'Africa/Gaborone'
 
 USE_I18N = True
