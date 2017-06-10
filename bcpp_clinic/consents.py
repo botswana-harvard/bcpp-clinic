@@ -16,7 +16,7 @@ tzinfo = gettz('Africa/Gaborone')
 
 clinic_v1 = Consent(
     'bcpp_clinic_subject.subjectconsent',
-    group='clinic',
+    version=1,
     start=arrow.get(
         datetime(2013, 10, 18, 0, 0, 0), tzinfo=tzinfo).to('UTC').datetime,
     end=arrow.get(
