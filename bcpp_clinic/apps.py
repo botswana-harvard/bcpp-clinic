@@ -116,10 +116,10 @@ class EdcTimepointAppConfig(BaseEdcTimepointAppConfig):
 
 class EdcAppointmentAppConfig(BaseEdcAppointmentAppConfig):
     app_label = 'bcpp_clinic_subject'
-    default_appt_type = 'home'
+    default_appt_type = 'clinic'
     facilities = {
-        'home': Facility(name='home', days=[MO, TU, WE, TH, FR, SA, SU],
-                         slots=[99999, 99999, 99999, 99999, 99999, 99999, 99999])}
+        'clinic': Facility(name='clinic', days=[MO, TU, WE, TH, FR, SA, SU],
+                           slots=[99999, 99999, 99999, 99999, 99999, 99999, 99999])}
 
 
 class EdcBaseAppConfig(BaseEdcBaseAppConfig):
