@@ -33,7 +33,7 @@ class AppConfig(DjangoApponfig):
     name = 'bcpp_clinic'
     listboard_template_name = 'bcpp_clinic/listboard.html'
     dashboard_template_name = 'bcpp_clinic/dashboard.html'
-    base_template_name = 'edc_base/base.html'
+    base_template_name = 'bcpp_clinic/base.html'
     listboard_url_name = 'bcpp_clinic:listboard_url'
     dashboard_url_name = 'bcpp_clinic:dashboard_url'
     admin_site_name = 'bcpp_clinic_admin'
