@@ -75,7 +75,7 @@ class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
 
 
 class EdcLabAppConfig(BaseEdcLabAppConfig):
-    base_template_name = 'bcpp/base.html'
+    base_template_name = 'bcpp_clinic/base.html'
     requisition_model = 'bcpp_clinic_subject.subjectrequisition'
     result_model = 'edc_lab.result'
 
