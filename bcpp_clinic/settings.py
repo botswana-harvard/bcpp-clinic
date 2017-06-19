@@ -140,6 +140,7 @@ DATABASES = {
     },
 }
 
+print(os.path.join(ETC_DIR, APP_NAME, 'mysql.conf'))
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
