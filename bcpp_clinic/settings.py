@@ -26,13 +26,20 @@ ETC_DIR = os.path.join(str(PurePath(BASE_DIR).parent), 'etc')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '*3izpxc9!j7)(a*2+_sw%_10gx*_$z1-%bf2mz%!pkd%@*%$1)'
 
-KEY_PATH = os.path.join(BASE_DIR, 'crypto_fields')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if DEBUG:
+    ETC_DIR = str(PurePath(BASE_DIR).joinpath('etc'))
+else:
+    ETC_DIR = '/etc'
+ALLOWED_HOSTS = ['bcpp-clinic.bhp.org.bw', 'localhost']
+
+KEY_PATH = os.path.join(BASE_DIR, 'crypto_fields')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -139,8 +146,6 @@ DATABASES = {
         },
     },
 }
-
-print(os.path.join(ETC_DIR, APP_NAME, 'mysql.conf'))
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
