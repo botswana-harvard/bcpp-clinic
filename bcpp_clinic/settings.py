@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
+import configparser
 import os
 import sys
 
@@ -16,32 +17,34 @@ from django.core.management.color import color_style
 from pathlib import PurePath
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 style = color_style()
 
 APP_NAME = 'bcpp_clinic'
 
-ETC_DIR = os.path.join(str(PurePath(BASE_DIR).parent), 'etc')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '*3izpxc9!j7)(a*2+_sw%_10gx*_$z1-%bf2mz%!pkd%@*%$1)'
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
 
+CONFIG_FILE = '{}.conf'.format(APP_NAME)
 if DEBUG:
     ETC_DIR = str(PurePath(BASE_DIR).joinpath('etc'))
 else:
     ETC_DIR = '/etc'
-ALLOWED_HOSTS = ['bcpp-clinic.bhp.org.bw', 'localhost']
-
-KEY_PATH = os.path.join(BASE_DIR, 'crypto_fields')
-
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+CONFIG_PATH = os.path.join(ETC_DIR, APP_NAME, CONFIG_FILE)
+sys.stdout.write(style.SUCCESS('Reading config from {}\n'.format(CONFIG_PATH)))
+
+config = configparser.RawConfigParser()
+config.read(os.path.join(CONFIG_PATH))
+
 
 # Application definition
 
@@ -134,10 +137,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bcpp_clinic.wsgi.application'
 
-
+print(os.path.join(ETC_DIR, APP_NAME, 'mysql.conf'),
+      '************************************')
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -172,7 +175,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
 }
-CORS_ORIGIN_ALLOW_ALL = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -194,17 +196,52 @@ USE_L10N = True
 
 USE_TZ = True
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, APP_NAME, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, APP_NAME, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-MEDIA_URL = '/media/'
+KEY_PATH = os.path.join(BASE_DIR, 'crypto_fields')
+GIT_DIR = BASE_DIR
 
-KEY_PATH = os.path.join(str(PurePath(BASE_DIR).parent), 'crypto_fields')
+CURRENT_MAP_AREA = 'test_community'
+DEVICE_ID = '21'
+DEVICE_ROLE = 'Client'
+LABEL_PRINTER = 'label_printer'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CORS_ORIGIN_ALLOW_ALL = True
+REST_FRAMEWORK = {
+    'PAGE_SIZE': 1,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+
+
+if 'test' in sys.argv:
+
+    class DisableMigrations:
+
+        def __contains__(self, item):
+            return True
+
+        def __getitem__(self, item):
+            return None
+
+    MIGRATION_MODULES = DisableMigrations()
+    PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher', )
+    DEFAULT_FILE_STORAGE = 'inmemorystorage.InMemoryStorage'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+KEY_PATH = os.path.join(BASE_DIR, 'crypto_fields')
 GIT_DIR = BASE_DIR
 
 DEVICE_ID = '21'
