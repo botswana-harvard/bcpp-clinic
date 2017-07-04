@@ -7,6 +7,7 @@ from dateutil.tz import gettz
 from django.apps import AppConfig as DjangoApponfig
 from django.conf import settings
 
+from bcpp_clinic_subject.constants import CLINIC_RBD
 from edc_appointment.apps import AppConfig as BaseEdcAppointmentAppConfig
 from edc_appointment.facility import Facility
 from edc_base.apps import AppConfig as BaseEdcBaseAppConfig
@@ -84,7 +85,7 @@ class EdcLabAppConfig(BaseEdcLabAppConfig):
 
 class EdcMetadataAppConfig(BaseEdcMetadataAppConfig):
     reason_field = {'bcpp_clinic_subject.subjectvisit': 'reason'}
-    create_on_reasons = [SCHEDULED, UNSCHEDULED]
+    create_on_reasons = [CLINIC_RBD, SCHEDULED, UNSCHEDULED]
     delete_on_reasons = [LOST_VISIT, FAILED_ELIGIBILITY]
     metadata_rules_enabled = True  # default
 
