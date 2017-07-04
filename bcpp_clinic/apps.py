@@ -57,7 +57,7 @@ class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
     protocol_name = 'BCPP Clinic'
     protocol_title = 'Botswana Combination Prevention Project'
     subject_types = [
-        SubjectType('clinic', 'Research Subject',
+        SubjectType('subject', 'Research Subject',
                     Cap(model_name='bcpp_clinic_subject.subjectconsent', max_subjects=9999)),
     ]
     study_open_datetime = datetime(2013, 10, 18, 0, 0, 0, tzinfo=gettz('UTC'))
@@ -65,13 +65,11 @@ class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):
 
     @property
     def site_name(self):
-        from edc_map.site_mappers import site_mappers
-        return site_mappers.current_map_area
+        return 'test_community'
 
     @property
     def site_code(self):
-        from edc_map.site_mappers import site_mappers
-        return site_mappers.current_map_code
+        return '01'
 
 
 class EdcLabAppConfig(BaseEdcLabAppConfig):
@@ -81,8 +79,7 @@ class EdcLabAppConfig(BaseEdcLabAppConfig):
 
     @property
     def study_site_name(self):
-        from edc_map.site_mappers import site_mappers
-        return site_mappers.current_map_area
+        return 'test_community'
 
 
 class EdcMetadataAppConfig(BaseEdcMetadataAppConfig):
