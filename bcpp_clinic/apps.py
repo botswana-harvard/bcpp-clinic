@@ -17,6 +17,8 @@ from edc_device.apps import AppConfig as BaseEdcDeviceAppConfig
 from edc_device.constants import CENTRAL_SERVER
 from edc_identifier.apps import AppConfig as BaseEdcIdentifierAppConfig
 from edc_lab.apps import AppConfig as BaseEdcLabAppConfig
+from edc_map.apps import AppConfig as BaseEdcMapAppConfig
+from edc_lab_dashboard.apps import AppConfig as BaseEdcLabDashboardAppConfig
 from edc_label.apps import AppConfig as BaseEdcLabelAppConfig
 from edc_metadata.apps import AppConfig as BaseEdcMetadataAppConfig
 from edc_protocol.apps import AppConfig as BaseEdcProtocolAppConfig, SubjectType, Cap
@@ -50,6 +52,15 @@ class EdcDeviceAppConfig(BaseEdcDeviceAppConfig):
     use_settings = True
     device_id = settings.DEVICE_ID
     device_role = settings.DEVICE_ROLE
+
+
+class EdcLabDashboardAppConfig(BaseEdcLabDashboardAppConfig):
+    base_template_name = 'bcpp_clinic/base.html'
+    requisition_model = 'bcpp_clinic_subject.subjectrequisition'
+
+
+class EdcMapAppConfig(BaseEdcMapAppConfig):
+    verbose_name = 'BCPP Mappers'
 
 
 class EdcProtocolAppConfig(BaseEdcProtocolAppConfig):

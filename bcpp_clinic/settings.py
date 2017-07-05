@@ -14,7 +14,6 @@ import os
 import sys
 
 from django.core.management.color import color_style
-from pathlib import PurePath
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -34,7 +33,8 @@ DEBUG = True
 
 CONFIG_FILE = '{}.conf'.format(APP_NAME)
 if DEBUG:
-    ETC_DIR = str(PurePath(BASE_DIR).joinpath('etc'))
+    ETC_DIR = '/etc'
+#     ETC_DIR = str(PurePath(BASE_DIR).joinpath('etc'))
 else:
     ETC_DIR = '/etc'
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
@@ -72,6 +72,8 @@ INSTALLED_APPS = [
     'bcpp_clinic.apps.EdcDeviceAppConfig',
     'bcpp_clinic.apps.EdcIdentifierAppConfig',
     'bcpp_clinic.apps.EdcLabAppConfig',
+    'bcpp_clinic.apps.EdcLabDashboardAppConfig',
+    'bcpp_clinic.apps.EdcMapAppConfig',
     'bcpp_clinic.apps.EdcLabelAppConfig',
     'bcpp_clinic.apps.EdcMetadataAppConfig',
     'bcpp_clinic.apps.EdcProtocolAppConfig',
@@ -137,8 +139,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bcpp_clinic.wsgi.application'
 
-print(os.path.join(ETC_DIR, APP_NAME, 'mysql.conf'),
-      '************************************')
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 DATABASES = {
