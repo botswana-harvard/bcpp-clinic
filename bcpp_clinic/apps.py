@@ -154,4 +154,4 @@ class EdcSyncFilesAppConfig(BaseEdcSyncFilesAppConfig):
 
 class EdcLabelAppConfig(BaseEdcLabelAppConfig):
     template_folder = os.path.join(
-        settings.STATIC_ROOT, 'bcpp_clinic', 'label_templates')
+        settings.STATIC_ROOT, 'bcpp_clinic', 'edc_label', 'label_templates')

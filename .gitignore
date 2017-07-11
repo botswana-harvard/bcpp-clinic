@@ -3,6 +3,8 @@ db.sqlite3
 .pydevproject
 .settings
 .DS_Store
+*.DS_Store
+static
 etc/*
 
 # Byte-compiled / optimized / DLL files
