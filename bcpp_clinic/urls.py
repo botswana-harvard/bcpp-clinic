@@ -28,8 +28,6 @@ urlpatterns = [
         name='administration_url'),
     url('subject/',
         include('bcpp_clinic_subject.urls')),
-    url('screening/',
-        include('bcpp_clinic_screening.urls')),
     url(r'^appointment/',
         include('edc_appointment.urls')),
     url(r'^edc/', include('edc_base.urls')),
