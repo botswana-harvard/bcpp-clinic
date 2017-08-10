@@ -84,7 +84,7 @@ INSTALLED_APPS = [
     'bcpp_clinic.apps.EdcVisitTrackingAppConfig',
     'bcpp_clinic_screening.apps.AppConfig',
     'bcpp_clinic_subject.apps.AppConfig',
-    'bcpp_clinic_validations.apps.AppConfig',
+    'bcpp_clinic_validators.apps.AppConfig',
     'bcpp_clinic.apps.AppConfig',
 ]
 
