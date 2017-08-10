@@ -1,15 +1,19 @@
-from edc_base.navbar_item import NavbarItem
+from edc_base import NavbarItem
 from edc_lab_dashboard.navbars import navbar_items as edc_lab_navbar_items
 
 navbars = {}
 navbar_items = []
+
 config = [
-    ('bcpp_clinic_dashboard', 'Subjects',
+    ('consented_subject', 'bcpp_clinic_dashboard', 'Subjects',
      'fa-user-circle-o', 'listboard_url_name'),
-    ('edc_lab_dashboard', None, 'fa-flask', 'home_url_name')
+    ('screened_subject', 'bcpp_clinic_dashboard', 'Screening',
+     'fa-user-circle-o', 'screening_listboard_url_name'),
+    ('lab', 'edc_lab_dashboard', None, 'fa-flask', 'home_url_name')
 ]
-for app_config_name, label, fa_icon, app_config_attr in config:
+for name, app_config_name, label, fa_icon, app_config_attr in config:
     navbar_item = NavbarItem(
+        name=name,
         app_config_name=app_config_name,
         label=label,
         fa_icon=fa_icon,
