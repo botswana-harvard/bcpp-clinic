@@ -10,7 +10,6 @@ from edc_sync.admin import edc_sync_admin
 from edc_identifier.admin_site import edc_identifier_admin
 
 from bcpp_clinic_subject.admin_site import bcpp_clinic_subject_admin
-from bcpp_clinic_screening.admin_site import bcpp_clinic_screening_admin
 
 from .views import HomeView, AdministrationView
 
@@ -18,7 +17,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^admin/', edc_appointment_admin.urls),
     url(r'^admin/', bcpp_clinic_subject_admin.urls),
-    url(r'^admin', bcpp_clinic_screening_admin.urls),
     url(r'^admin/', edc_lab_admin.urls),
     url(r'^admin/', edc_identifier_admin.urls),
     url(r'^admin/', edc_metadata_admin.urls),
@@ -28,6 +26,7 @@ urlpatterns = [
         name='administration_url'),
     url('subject/',
         include('bcpp_clinic_subject.urls')),
+    url('subject_dashboard/', include('bcpp_clinic_dashboard.urls')),
     url(r'^appointment/',
         include('edc_appointment.urls')),
     url(r'^edc/', include('edc_base.urls')),
