@@ -82,8 +82,8 @@ INSTALLED_APPS = [
     'bcpp_clinic.apps.EdcSyncFilesAppConfig',
     'bcpp_clinic.apps.EdcTimepointAppConfig',
     'bcpp_clinic.apps.EdcVisitTrackingAppConfig',
-    'bcpp_clinic_screening.apps.AppConfig',
     'bcpp_clinic_subject.apps.AppConfig',
+    'bcpp_clinic_dashboard.apps.AppConfig',
     'bcpp_clinic_validators.apps.AppConfig',
     'bcpp_clinic.apps.AppConfig',
 ]
@@ -211,6 +211,8 @@ CURRENT_MAP_AREA = 'test_community'
 DEVICE_ID = '21'
 DEVICE_ROLE = 'Client'
 LABEL_PRINTER = 'label_printer'
+
+EDC_LAB_REQUISITION_MODEL = 'bcpp_clinic_subject.SubjectRequisition'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 CORS_ORIGIN_ALLOW_ALL = True
