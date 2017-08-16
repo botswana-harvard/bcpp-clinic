@@ -85,6 +85,9 @@ INSTALLED_APPS = [
     'bcpp_clinic_subject.apps.AppConfig',
     'bcpp_clinic_dashboard.apps.AppConfig',
     'bcpp_clinic_validators.apps.AppConfig',
+    'bcpp_clinic_metadata_rules.apps.AppConfig',
+    'bcpp_clinic_reference.apps.AppConfig',
+    'bcpp_clinic_visit_schedule.apps.AppConfig',
     'bcpp_clinic.apps.AppConfig',
 ]
 
