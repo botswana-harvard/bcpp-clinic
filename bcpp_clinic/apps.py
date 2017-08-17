@@ -7,6 +7,7 @@ from dateutil.tz import gettz
 from django.apps import AppConfig as DjangoApponfig
 from django.conf import settings
 
+from bcpp_clinic_subject.constants import RESEARCH_BLOOD_DRAW
 from edc_appointment.apps import AppConfig as BaseEdcAppointmentAppConfig
 from edc_appointment.facility import Facility
 from edc_base.apps import AppConfig as BaseEdcBaseAppConfig
@@ -16,9 +17,9 @@ from edc_device.apps import AppConfig as BaseEdcDeviceAppConfig
 from edc_device.constants import CENTRAL_SERVER
 from edc_identifier.apps import AppConfig as BaseEdcIdentifierAppConfig
 from edc_lab.apps import AppConfig as BaseEdcLabAppConfig
-from edc_map.apps import AppConfig as BaseEdcMapAppConfig
 from edc_lab_dashboard.apps import AppConfig as BaseEdcLabDashboardAppConfig
 from edc_label.apps import AppConfig as BaseEdcLabelAppConfig
+from edc_map.apps import AppConfig as BaseEdcMapAppConfig
 from edc_metadata.apps import AppConfig as BaseEdcMetadataAppConfig
 from edc_protocol.apps import AppConfig as BaseEdcProtocolAppConfig, SubjectType, Cap
 from edc_sync.apps import AppConfig as BaseEdcSyncAppConfig
@@ -96,7 +97,7 @@ class EdcLabAppConfig(BaseEdcLabAppConfig):
 
 class EdcMetadataAppConfig(BaseEdcMetadataAppConfig):
     reason_field = {'bcpp_clinic_subject.subjectvisit': 'reason'}
-    create_on_reasons = [SCHEDULED, UNSCHEDULED]
+    create_on_reasons = [RESEARCH_BLOOD_DRAW, SCHEDULED, UNSCHEDULED]
     delete_on_reasons = [LOST_VISIT, FAILED_ELIGIBILITY]
     metadata_rules_enabled = True  # default
 
