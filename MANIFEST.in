@@ -1,3 +1,4 @@
 include AUTHORS CHANGES README.md LICENCE
 recursive-include bcpp_clinic/templates *
+recursive-include bcpp_clinic_dashboard/templates *
 recursive-include bcpp_clinic/static/label_templates *
