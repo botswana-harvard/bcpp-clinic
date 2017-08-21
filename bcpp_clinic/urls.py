@@ -7,6 +7,7 @@ from edc_lab.admin_site import edc_lab_admin
 from edc_metadata.admin_site import edc_metadata_admin
 from edc_registration.admin_site import edc_registration_admin
 from edc_sync.admin import edc_sync_admin
+from edc_sync_files.admin_site import edc_sync_files_admin
 from edc_identifier.admin_site import edc_identifier_admin
 
 from bcpp_clinic_subject.admin_site import bcpp_clinic_subject_admin
@@ -22,6 +23,7 @@ urlpatterns = [
     url(r'^admin/', edc_metadata_admin.urls),
     url(r'^admin/', edc_registration_admin.urls),
     url(r'^admin/', edc_sync_admin.urls),
+    url(r'^admin/edc_sync_files/', edc_sync_files_admin.urls),
     url(r'^admininistration/', AdministrationView.as_view(),
         name='administration_url'),
     url('subject/',
@@ -40,6 +42,7 @@ urlpatterns = [
     url(r'^edc_registration/',
         include('edc_registration.urls')),
     url(r'^edc_sync/', include('edc_sync.urls')),
+    url(r'^edc_sync_files/', include('edc_sync_files.urls')),
     url(r'^edc_visit_schedule/',
         include('edc_visit_schedule.urls')),
     url(r'^tz_detect/', include('tz_detect.urls')),

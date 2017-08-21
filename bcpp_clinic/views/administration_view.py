@@ -9,6 +9,7 @@ from edc_dashboard.view_mixins import AppConfigViewMixin
 
 class AdministrationView(EdcBaseViewMixin, AppConfigViewMixin, TemplateView):
 
+    app_config_name = 'bcpp_clinic'
     template_name = 'bcpp_clinic/administration.html'
 
     @method_decorator(login_required)
