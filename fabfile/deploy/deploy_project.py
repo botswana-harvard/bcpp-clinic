@@ -1,7 +1,7 @@
 import os
 from fabric.contrib.files import exists
 from edc_fabric.fabfile.virtualenv.tasks import activate_venv
-from fabric.api import env, put, sudo, cd, run, warn, prefix, lcd, task
+from fabric.api import env, put, cd, run, task
 
 from edc_fabric.fabfile import create_venv
 from edc_fabric.fabfile.nginx.tasks import install_nginx
@@ -10,8 +10,11 @@ from edc_fabric.fabfile.mysql.tasks import (
 from edc_fabric.fabfile.gunicorn.tasks import install_gunicorn
 from edc_fabric.fabfile.environment.tasks import bootstrap_env,\
     update_fabric_env
+from edc_fabric.fabfile.utils import rsync_deployment_root
 from edc_fabric.fabfile.python.tasks import install_python3
 from edc_fabric.fabfile.utils import launch_webserver
+from fabric.utils import abort
+from edc_fabric.fabfile.repositories import get_repo_name
 
 
 def clone_clinic_repo():
@@ -75,7 +78,7 @@ def deploy(**kwargs):
 
 def deploy_client(conf_filename=None, bootstrap_path=None, map_area=None, user=None,
                   bootstrap_branch=None, skip_mysql=None, skip_python=None,
-                  work_online=True, deployment_root=None, **kwargs):
+                  work_online=True, deployment_root=None, release=None, **kwargs):
 
     #  Install Mysql,
 
@@ -93,14 +96,30 @@ def deploy_client(conf_filename=None, bootstrap_path=None, map_area=None, user=N
         filename=conf_filename,
         bootstrap_branch=None)
     env.bootstrap_path = bootstrap_path or env.bootstrap_path
+
+    if not release:
+        abort('Specify the release')
+    if not map_area:
+        abort('Specify the map_area')
+
+    env.project_release = release
+    env.map_area = map_area
+
+    env.project_repo_name = get_repo_name(env.project_repo_url)
+    env.project_repo_root = os.path.join(
+        env.deployment_root, env.project_repo_name)
+    env.fabric_config_root = os.path.join(env.project_repo_root, 'fabfile')
+    env.fabric_config_path = os.path.join(
+        env.fabric_config_root, 'conf', env.fabric_conf)
+
+    rsync_deployment_root()
+
     update_fabric_env()
     if not skip_mysql:
         install_mysql()
 
     if not skip_python:
         install_python3()
-    drop_database(
-        dbname='edc_clinic', dbuser='root', dbpasswd='cc3721b')
     drop_database(
         dbname='edc', dbuser='root', dbpasswd='cc3721b')
     create_database(

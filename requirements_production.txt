@@ -1,5 +1,7 @@
 git+https://github.com/botswana-harvard/edc-base.git@0.2.11#egg=edc_base
 git+https://github.com/botswana-harvard/edc-sync-files.git@0.1.11#egg=edc_sync_files
+git+https://github.com/erikvw/django-crypto-fields.git@0.1.11#egg=django_crypto_fields
+git+https://github.com/erikvw/django-revision.git@0.1.12#egg=django_revision
 git+https://github.com/botswana-harvard/edc-sync.git@0.2.16#egg=edc_sync
 git+https://github.com/botswana-harvard/edc-dashboard.git@0.2.5#egg=edc_dashboard
 git+https://github.com/botswana-harvard/edc-consent.git@0.2.6#egg=edc_consent
