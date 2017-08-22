@@ -86,7 +86,7 @@ def deploy_client(conf_filename=None, bootstrap_path=None, map_area=None, user=N
     conf_filename = 'bootstrap_client.conf'
     env.deployment_root = deployment_root
     env.etc_dir = '/etc/'
-    env.dbname = 'edc_clinic'
+    env.dbname = 'edc'
     env.python_version = 3.6
     env.venv_name = 'bcpp-clinic'
     env.venv_dir = '/Users/django/.venvs/'
