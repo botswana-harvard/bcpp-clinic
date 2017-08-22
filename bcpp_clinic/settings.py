@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 style = color_style()
 
-APP_NAME = 'bcpp-clinic'
+APP_NAME = 'bcpp_clinic'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'edc_registration.apps.AppConfig',
     'edc_reference.apps.AppConfig',
     'edc_visit_schedule.apps.AppConfig',
+    'edc_metadata_rules.apps.AppConfig',
     'bcpp_clinic.apps.EdcAppointmentAppConfig',
     'bcpp_clinic.apps.EdcBaseAppConfig',
     'bcpp_clinic.apps.EdcDeviceAppConfig',

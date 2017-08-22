@@ -1,5 +1,6 @@
-from os.path import exists
-
+import os
+from fabric.contrib.files import exists
+from edc_fabric.fabfile.virtualenv.tasks import activate_venv
 from fabric.api import env, put, sudo, cd, run, warn, prefix, lcd, task
 
 from edc_fabric.fabfile import create_venv
@@ -10,20 +11,45 @@ from edc_fabric.fabfile.gunicorn.tasks import install_gunicorn
 from edc_fabric.fabfile.environment.tasks import bootstrap_env,\
     update_fabric_env
 from edc_fabric.fabfile.python.tasks import install_python3
+from edc_fabric.fabfile.utils import launch_webserver
 
 
 def clone_clinic_repo():
     destination = '/Users/django/source/'
     repo_destination = '/Users/django/source/bcpp-clinic/'
+    repos = ['edc-dashboard', 'edc-metadata']
+    env.project_repo_url = 'https://github.com/botswana-harvard/bcpp-clinic.git'
+    gunicorn_file = '/Users/ckgathi/source/bcpp-clinic/fabfile/conf/gunicorn/gunicorn.conf.py'
+    if exists(os.path.join(destination, 'bcpp')):
+        with(cd(f'{destination}')):
+            run('rm -rf bcpp')
     if not exists(destination):
         run(f'mkdir -p {destination}')
-#     if not exists(repo_destination):
-#         with(cd(f'{destination}')):
-#             run('git clone {project_repo_url}'.format(
-#                 project_repo_url=env.project_repo_url))
-#     else:
-    with(cd(f'{repo_destination}')):
-        run('git pull')
+    if not exists(repo_destination):
+        with(cd(f'{destination}')):
+            run('git clone {project_repo_url}'.format(
+                project_repo_url=env.project_repo_url))
+        with(cd(f'{repo_destination}')):
+            put(os.path.expanduser(gunicorn_file),
+                os.path.expanduser(repo_destination))
+    else:
+        with(cd(f'{repo_destination}')):
+            run('git pull')
+            put(os.path.expanduser(gunicorn_file),
+                os.path.expanduser(repo_destination))
+    for repo in repos:
+        if exists(os.path.join(destination, repo)):
+            if repo == 'edc-metadata':
+                with(cd(os.path(destination))):
+                    run(f'rm -rf {repo}')
+        else:
+            if repo != 'edc-metadata':
+                with(cd(f'{destination}')):
+                    run(f'git clone https://github.com/botswana-harvard/{repo}.git')
+                with cd(destination):
+                    run(f'source {activate_venv()} && pip uninstall {repo}', warn_only=True)
+                    repo_path = os.path.join(destination, repo)
+                    run(f'source {activate_venv()} && pip install -e {repo_path}')
 
 
 @task
@@ -61,7 +87,7 @@ def deploy_client(conf_filename=None, bootstrap_path=None, map_area=None, user=N
     env.python_version = 3.6
     env.venv_name = 'bcpp-clinic'
     env.venv_dir = '/Users/django/.venvs/'
-
+    clone_clinic_repo()
     bootstrap_env(
         path=bootstrap_path,
         filename=conf_filename,
@@ -75,9 +101,11 @@ def deploy_client(conf_filename=None, bootstrap_path=None, map_area=None, user=N
         install_python3()
     drop_database(
         dbname='edc_clinic', dbuser='root', dbpasswd='cc3721b')
+    drop_database(
+        dbname='edc', dbuser='root', dbpasswd='cc3721b')
     create_database(
-        dbname='edc_clinic', dbuser='root', dbpasswd='cc3721b')
-#     clone_clinic_repo()
-    create_venv(env.venv_name, env.requirements_file, work_online=True)
-    install_nginx(**kwargs)
+        dbname='edc', dbuser='root', dbpasswd='cc3721b')
+    create_venv(env.venv_name, env.requirements_file)
+    install_nginx(skip_bootstrap=True)
     install_gunicorn(work_online=True)
+    launch_webserver()
