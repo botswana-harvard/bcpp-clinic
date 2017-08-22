@@ -1,6 +1,16 @@
+db.sqlite3
+.project
+.pydevproject
+.settings
+.DS_Store
+*.DS_Store
+static
+etc/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.pyc
 *$py.class
 
 # C extensions
