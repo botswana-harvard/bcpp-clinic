@@ -33,11 +33,13 @@ def clone_clinic_repo():
             run('git clone {project_repo_url}'.format(
                 project_repo_url=env.project_repo_url))
         with(cd(f'{repo_destination}')):
+            run('git checkout master')
             put(os.path.expanduser(gunicorn_file),
                 os.path.expanduser(repo_destination))
     else:
         with(cd(f'{repo_destination}')):
             run('git pull')
+            run('git checkout master')
             put(os.path.expanduser(gunicorn_file),
                 os.path.expanduser(repo_destination))
     for repo in repos:
@@ -120,10 +122,9 @@ def deploy_client(conf_filename=None, bootstrap_path=None, map_area=None, user=N
 
     if not skip_python:
         install_python3()
-    drop_database(
-        dbname='edc', dbuser='root', dbpasswd='cc3721b')
-    create_database(
-        dbname='edc', dbuser='root', dbpasswd='cc3721b')
+    run('mysql -uroot -pcc3721b drop database edc;', warn_only=True)
+    run('mysql -uroot -pcc3721b create database edc character set utf8;',
+        warn_only=True)
     create_venv(env.venv_name, env.requirements_file)
     install_nginx(skip_bootstrap=True)
     install_gunicorn(work_online=True)
