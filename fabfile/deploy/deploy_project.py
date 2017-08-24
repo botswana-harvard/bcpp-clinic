@@ -1,12 +1,11 @@
 import os
-from fabric.contrib.files import exists
+from fabric.contrib.files import exists, sed
 from edc_fabric.fabfile.virtualenv.tasks import activate_venv
-from fabric.api import env, put, cd, run, task
+from fabric.api import env, put, cd, run, task, sudo
 
 from edc_fabric.fabfile import create_venv
 from edc_fabric.fabfile.nginx.tasks import install_nginx
-from edc_fabric.fabfile.mysql.tasks import (
-    create_database, install_mysql, drop_database)
+from edc_fabric.fabfile.mysql.tasks import install_mysql
 from edc_fabric.fabfile.gunicorn.tasks import install_gunicorn
 from edc_fabric.fabfile.environment.tasks import bootstrap_env,\
     update_fabric_env
@@ -15,6 +14,7 @@ from edc_fabric.fabfile.python.tasks import install_python3
 from edc_fabric.fabfile.utils import launch_webserver
 from fabric.utils import abort
 from edc_fabric.fabfile.repositories import get_repo_name
+from edc_fabric.fabfile.conf import put_project_conf
 
 
 def clone_clinic_repo():
@@ -45,7 +45,7 @@ def clone_clinic_repo():
     for repo in repos:
         if exists(os.path.join(destination, repo)):
             if repo == 'edc-metadata':
-                with(cd(os.path(destination))):
+                with(cd(destination)):
                     run(f'rm -rf {repo}')
         else:
             if repo != 'edc-metadata':
@@ -55,6 +55,19 @@ def clone_clinic_repo():
                     run(f'source {activate_venv()} && pip uninstall {repo}', warn_only=True)
                     repo_path = os.path.join(destination, repo)
                     run(f'source {activate_venv()} && pip install -e {repo_path}')
+
+
+def update_bcpp_clinic_conf(project_conf=None, map_area=None):
+    """Updates the bcpp.conf file on the remote host.
+    """
+    project_conf = project_conf or env.project_conf
+    map_area = map_area or env.map_area
+    remote_copy = os.path.join(env.etc_dir, 'bcpp-clinic', project_conf)
+    if not exists(env.etc_dir):
+        sudo('mkdir {etc_dir}'.format(etc_dir=env.etc_dir))
+    sed(remote_copy, 'map_area \=.*',
+        'map_area \= {}'.format(map_area or ''),
+        use_sudo=True)
 
 
 @task
@@ -88,7 +101,9 @@ def deploy_client(conf_filename=None, bootstrap_path=None, map_area=None, user=N
     conf_filename = 'bootstrap_client.conf'
     env.deployment_root = deployment_root
     env.etc_dir = '/etc/'
+    env.project_conf = 'bcpp-clinic.conf'
     env.dbname = 'edc'
+    env.device_id = 78
     env.python_version = 3.6
     env.venv_name = 'bcpp-clinic'
     env.venv_dir = '/Users/django/.venvs/'
@@ -115,6 +130,20 @@ def deploy_client(conf_filename=None, bootstrap_path=None, map_area=None, user=N
         env.fabric_config_root, 'conf', env.fabric_conf)
 
     rsync_deployment_root()
+    project_conf = 'bcpp-clinic.conf'
+    local_copy = os.path.expanduser(os.path.join(
+        env.fabric_config_root, 'conf', project_conf))
+    remote_copy = os.path.join(
+        env.etc_dir, 'bcpp-clinic')
+    path1 = os.path.join(env.etc_dir, 'bcpp-clinic')
+    if exists(path1):
+        sudo('rm -rf {path1}')
+    if not exists(env.etc_dir):
+        sudo('mkdir {etc_dir}'.format(etc_dir=env.etc_dir))
+    if not exists(remote_copy):
+        sudo(f'mkdir {remote_copy}')
+    put(local_copy, remote_copy, use_sudo=True)
+    update_bcpp_clinic_conf()
 
     update_fabric_env()
     if not skip_mysql:

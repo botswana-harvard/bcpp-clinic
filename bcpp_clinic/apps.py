@@ -92,7 +92,8 @@ class EdcLabAppConfig(BaseEdcLabAppConfig):
 
     @property
     def study_site_name(self):
-        return 'test_community'
+        from edc_map.site_mappers import site_mappers
+        return site_mappers.current_map_area
 
 
 class EdcMetadataAppConfig(BaseEdcMetadataAppConfig):

@@ -208,15 +208,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-KEY_PATH = os.path.join(BASE_DIR, 'crypto_fields')
+if DEBUG:
+    KEY_PATH = config['django_crypto_fields'].get('key_path')
+else:
+    KEY_PATH = config['django_crypto_fields'].get('key_path')
 GIT_DIR = BASE_DIR
 
-CURRENT_MAP_AREA = 'test_community'
-DEVICE_ID = '21'
-DEVICE_ROLE = 'Client'
+CURRENT_MAP_AREA = config['edc_map'].get('map_area', 'test_community')
+DEVICE_ID = config['edc_device'].get('device_id', '99')
+DEVICE_ROLE = config['edc_device'].get('role')
 LABEL_PRINTER = 'label_printer'
 
-EDC_LAB_REQUISITION_MODEL = 'bcpp_clinic_subject.SubjectRequisition'
+EDC_LAB_REQUISITION_MODEL = 'bcpp_clinic_subject.subjectrequisition'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 CORS_ORIGIN_ALLOW_ALL = True

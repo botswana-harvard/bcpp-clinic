@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 
 from edc_base.view_mixins import EdcBaseViewMixin
 from edc_dashboard.view_mixins import AppConfigViewMixin
+from django.conf import settings
 
 
 class HomeView(EdcBaseViewMixin, AppConfigViewMixin, TemplateView):
@@ -17,5 +18,6 @@ class HomeView(EdcBaseViewMixin, AppConfigViewMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update(navbar_item_selected='home')
+        context.update(
+            navbar_item_selected='home', map_area=settings.CURRENT_MAP_AREA,)
         return context
