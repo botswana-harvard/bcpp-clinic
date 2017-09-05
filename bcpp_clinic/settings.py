@@ -14,6 +14,7 @@ import os
 import sys
 
 from django.core.management.color import color_style
+from pathlib import PurePath
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -230,6 +231,17 @@ REST_FRAMEWORK = {
     ),
 }
 
+STATIC_ROOT = config['django'].get(
+    'static_root', os.path.join(BASE_DIR, APP_NAME, 'static'))
+STATIC_URL = '/static/'
+if 'test' in sys.argv:
+    MEDIA_ROOT = str(PurePath(BASE_DIR).parent)
+else:
+    MEDIA_ROOT = config['django'].get(
+        'media_root', os.path.join(BASE_DIR, APP_NAME, 'media'))
+    print(MEDIA_ROOT)
+MEDIA_URL = '/media/'
+
 
 if 'test' in sys.argv:
 
@@ -242,14 +254,13 @@ if 'test' in sys.argv:
             return None
 
     MIGRATION_MODULES = DisableMigrations()
-    PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher', )
+    PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',)
     DEFAULT_FILE_STORAGE = 'inmemorystorage.InMemoryStorage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 KEY_PATH = os.path.join(BASE_DIR, 'crypto_fields')
 GIT_DIR = BASE_DIR

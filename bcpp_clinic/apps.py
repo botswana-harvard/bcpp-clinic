@@ -1,4 +1,5 @@
 import os
+import configparser
 
 from datetime import datetime
 from dateutil.relativedelta import MO, TU, WE, TH, FR, SA, SU
@@ -30,6 +31,11 @@ from edc_visit_tracking.apps import AppConfig as BaseEdcVisitTrackingAppConfig
 from edc_visit_tracking.constants import SCHEDULED, UNSCHEDULED, LOST_VISIT
 
 from .navbars import navbars
+
+config = configparser.RawConfigParser()
+config.read(os.path.join(settings.ETC_DIR,
+                         settings.APP_NAME,
+                         settings.CONFIG_FILE))
 
 
 class AppConfig(DjangoApponfig):
@@ -148,7 +154,8 @@ class EdcSyncAppConfig(BaseEdcSyncAppConfig):
 
 class EdcSyncFilesAppConfig(BaseEdcSyncFilesAppConfig):
     edc_sync_files_using = True
-    role = CENTRAL_SERVER
+    remote_host = config['edc_sync_files'].get('remote_host')
+    user = config['edc_sync_files'].get('sync_user')
 
 
 class EdcLabelAppConfig(BaseEdcLabelAppConfig):
