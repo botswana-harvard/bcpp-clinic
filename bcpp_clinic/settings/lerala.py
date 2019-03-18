@@ -1,5 +1,5 @@
 from .base import *
 
-CURRENT_MAP_AREA = 'Lerala'
+CURRENT_MAP_AREA = 'lerala'
 DEVICE_ROLE = 'NodeServer'
 DEVICE_ID = '98'
